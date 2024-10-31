@@ -1,0 +1,253 @@
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+    <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
+        <i class="zmdi zmdi-plus"></i>ajouter remboursement</button>
+   
+</div>
+<%  if (locals?.remb && locals?.remb.length != 0) { %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>Montant</th>
+                    <th>Paiement</th>
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< remb.length; i++) { %>
+                <tr>
+                    <td><%= remb[i].id %></td>
+                    <td><%= remb[i].date %></td>
+                    <td><%= remb[i].prenom %> <%= remb[i].nom %></td>
+                    <td><%= remb[i].montant %></td>
+                    <td><%= remb[i].id_facture %></td>
+                   
+                    <td>
+                     <% let dlink3 = '/supprimer_remboursement/?id='+remb[i].id;
+                     let target = "#largeModal"+remb[i].id;
+                     let targetx = "#largeModalx"+remb[i].id;
+                     let del = "del"+remb[i].id;
+                     let delx = "del"+remb[i].id+"x"; %>
+                      <div class="table-data-feature">
+                          <button class="item"  data-toggle="modal" data-target="<%= targetx %>" data-placement="top" title="afficher">
+                              <i class="fa fa-eye"></i>
+                          </button>
+                          <button class="item"  data-placement="top" title="Modifier" data-toggle="modal" data-target="<%= target %>">
+                              <i class="zmdi zmdi-edit"></i>
+                          </button>
+                          <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                              <i class="zmdi zmdi-delete"></i>
+                          </button>
+                          <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               <script>
+
+                function sup(x)
+                {
+                  if(confirm(" souhaitez vous supprimer ce remboursement ?")==true)
+                {
+                  var s = x+"x";
+                  document.getElementById(s).click();
+                }
+                }
+               </script>
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucun remboursement trouvé
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+<% for (var i=0; i< remb.length; i++){
+  
+  let target = "largeModal"+remb[i].id; 
+  let label = "largeModalLabel"+remb[i].id;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">Modifier remboursement</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <form action="/modifier_remboursement" method="post">
+
+      <div class="modal-body">
+        <p>
+<input type="hidden" name="id" value="<%= remb[i].id %>">
+  <div class="card-body card-block">
+    
+    <div class="form-group">
+        <label for="nom" class=" form-control-label">Paiement</label>
+        <select class="form-control"  required class="col-md-6"  name="facture">
+          <option value='<%= remb[i].id_facture %> '><%= remb[i].id_facture+". " %><%= remb[i].prenom %> <%= remb[i].nom %> </option>
+            <%  
+            for(var j=0; j< factures.length; j++) {
+              if(factures[j].id !=remb[i].id_facture){
+              %>
+        <option value='<%= factures[j].id %> '><%= factures[j].id+". " %><%= factures[j].prenom %> <%= factures[j].nom %> </option>
+        
+        <%  }} %>
+        </select>
+    </div>
+   
+    
+    <div class="form-group">
+        <label for="mont" class=" form-control-label">Montant</label>
+        <input type="number" name="montant" required min="0" value="<%= remb[i].montant %>" class="form-control">
+    </div>
+
+    
+    
+
+</div>
+
+
+
+           </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+<% for (var i=0; i< remb.length; i++){
+  
+  let target = "largeModalx"+remb[i].id; 
+  let label = "largeModalLabelx"+remb[i].id;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">informations remboursement</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      
+
+      <div class="modal-body">
+        <p>
+<p><b>Id : </b>  <%= remb[i].id %></p>
+<p><b>Date : </b>  <%= remb[i].date %></p>
+<p><b>Client : </b>  <%= remb[i].prenom %>  <%= remb[i].nom %></p>
+<p><b>Facture : </b>  <%= remb[i].id_facture %></p>
+<p><b>Montant : </b>  <%= remb[i].montant %></p>
+
+           </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">fermer</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Créer un remboursement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="/ajouter_remboursement" method="post">
+
+    <div class="modal-body">
+
+<div class="card-body card-block">
+  
+  <div class="form-group">
+      <label for="nom" class=" form-control-label">Date</label>
+      <input type="date" required id="vat"  name="date" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="nom" class=" form-control-label">Paiement</label>
+    <select class="form-control"  required class="col-md-6"  name="facture">
+       <%  
+        for(var j=0; j< factures.length; j++) {
+         
+          %>
+    <option value='<%= factures[j].id %> '><%= factures[j].id+". " %><%= factures[j].prenom %> <%= factures[j].nom %> </option>
+    
+    <%  } %>
+    </select>
+</div>
+
+
+<div class="form-group">
+    <label for="mont" class=" form-control-label">Montant</label>
+    <input type="number" name="montant" required min="0"  class="form-control">
+</div>
+
+
+</div>
+
+
+
+         </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>

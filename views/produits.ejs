@@ -1,0 +1,646 @@
+
+
+
+
+
+
+
+<%- include('header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;width:900px;">
+    <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
+        <i class="zmdi zmdi-plus"></i>ajouter produit</button>
+        <a href="/exporter" class="au-btn au-btn-icon au-btn--green au-btn--small" >
+          <i class="zmdi zmdi-plus"></i>exporter données produits</a>
+          <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#smallmodal_i">
+            <i class="zmdi zmdi-plus"></i>importer données produits</button>
+            
+     
+   
+</div>
+
+
+<%  if (locals?.produit && locals?.produit.length != 0) { %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Marque</th>
+                    
+                    <th>Stock</th>
+                   
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< produit.length; i++) { %>
+                <tr>
+                    <td><%= produit[i].id_produit %></td>
+                    <td><%= produit[i].nom %></td>
+                    <td><%= produit[i].marque %></td>
+                    <td><%= produit[i].qte_en_stock %></td>
+                   
+                    <td>
+                     <% let dlink3 = '/supprimer_produit/?id='+produit[i].id_produit;
+                     let target = "#largeModal"+produit[i].id_produit;
+                     let targetx = "#largeModalx"+produit[i].id_produit;
+                     let del = "del"+produit[i].id_produit;
+                     let delx = "del"+produit[i].id_produit+"x"; %>
+                      <div class="table-data-feature">
+                          <button class="item"  data-toggle="modal" data-target="<%= targetx %>" data-placement="top" title="afficher">
+                              <i class="fa fa-eye"></i>
+                          </button>
+                          <button class="item"  data-placement="top" title="Modifier" data-toggle="modal" data-target="<%= target %>">
+                              <i class="zmdi zmdi-edit"></i>
+                          </button>
+                          <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                              <i class="zmdi zmdi-delete"></i>
+                          </button>
+                          <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               <script>
+
+                function sup(x)
+                {
+                  if(confirm("vous risquez de supprimer les achats et devis liés à ce produit, souhaitez vous continuer ?")==true)
+                {
+                  var s = x+"x";
+                  document.getElementById(s).click();
+                }
+                }
+               </script>
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucun produit trouvé
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+<% for (var i=0; i< produit.length; i++){
+  
+  let target = "largeModal"+produit[i].id_produit; 
+  let label = "largeModalLabel"+produit[i].id_produit;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">Modifier produit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <form action="/modifier_produit" method="post">
+
+      <div class="modal-body">
+        <p>
+<input type="hidden" name="id" value="<%= produit[i].id_produit %>">
+  <div class="card-body card-block">
+    
+    <div class="form-group">
+        <label for="nom" class=" form-control-label">Nom</label>
+        <input type="text" required id="vat" value="<%= produit[i].nom %>" name="nom" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="adresse" class=" form-control-label">Marque</label>
+        <input type="text" required id="street" name="marque" value="<%= produit[i].marque %>" class="form-control">
+    </div>
+    
+   
+
+    <div class="form-group">
+      <label for="tel" class=" form-control-label">prix</label>
+      <input type="number" name="prix" required min="0" value="<%= produit[i].prix %>" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="tel" class=" form-control-label">Stock</label>
+    <input type="number" name="stock" required min="0" value="<%= produit[i].qte_en_stock %>" class="form-control">
+</div>
+    
+<div class="form-group">
+  <label for="tel" class=" form-control-label">Seuil alerte Stock</label>
+  <input type="number" name="alerte" required min="0" value="<%= produit[i].alerte %>" class="form-control">
+</div>
+  
+
+
+<div class="form-group">
+  <label for="fourn" class=" form-control-label">sous categorie</label>
+  <select class="form-control" required  name="categorie">
+    <option value='<%= produit[i].categorie %> '><%= produit[i].categorie %> </option>
+    <%  
+    for(var j=0; j< categories.length; j++) {
+      
+     if(produit[i].id_c != categories[j].id){ %>
+<option value='<%= categories[j].nom %> '><%= categories[j].nom %> </option>
+
+<% }} %>
+</select>
+</div>
+<% let namex = "fic"+produit[i].id_produit; %>
+<div class="form-group">
+  <label for="email" class=" form-control-label">Choisir une autre image</label>
+  <input type="file" name="image"  id="<%= namex %>"   class="form-control">
+</div>
+</div>
+
+<% let name = "fic"+produit[i].id_produit+"x"; %>
+<input type="hidden" id="<%= name %>" name="img">
+<script>
+ 
+
+
+document.getElementById('<%= namex %>').onchange = function()
+{
+  const reader = new FileReader();
+
+let files = document.getElementById('<%= namex %>').files;
+reader.onload = async (event) => {
+ 
+  document.getElementById('<%= name %>').value =event.target.result;
+}
+reader.readAsDataURL(files[0]);
+}
+ </script>
+ <p><img src="<%= produit[i].image %>" alt="image produit"></p>
+           </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+<% for (var i=0; i< produit.length; i++){
+  
+  let target = "largeModalx"+produit[i].id_produit; 
+  let label = "largeModalLabelx"+produit[i].id_produit;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">informations produit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      
+
+      <div class="modal-header" style="display:flex;justify-content:center;">
+
+           <div class="product-card">
+            <div class="product-image" style="display:flex;justify-content:center;">
+                <img src="<%= produit[i].image %>" style="height:220px;width:220px;" alt="Image du produit">
+            </div>
+            <div class="product-info">
+                <h2 class="product-title"><%= produit[i].nom %></h2>
+                <p class="product-brand">Marque: <span><%= produit[i].marque %></span></p>
+               <div class="product-price"><%= produit[i].prix %> FCFA</div>
+                <div class="product-stock">Quantité en stock: <span><%= produit[i].qte_en_stock %></span></div>
+               <div class="product-stock">Seuil d'alerte: <span><%= produit[i].alerte %></span></div>
+               
+               </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">fermer</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Créer un produit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="/ajouter_produit" method="post">
+
+    <div class="modal-body">
+
+<div class="card-body card-block">
+  
+  <p>
+    
+      <div class="card-body card-block">
+        
+        <div class="form-group">
+            <label for="nom" class=" form-control-label">Nom</label>
+            <input type="text" required id="vat"  name="nom" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="adresse" class=" form-control-label">Marque</label>
+            <input type="text" required id="street" name="marque"  class="form-control">
+        </div>
+        
+       
+        <div class="form-group">
+          <label for="tel" class=" form-control-label">prix</label>
+          <input type="number" name="prix" required min="0" class="form-control">
+      </div>
+    
+      <div class="form-group">
+        <label for="tel" class=" form-control-label">Stock</label>
+        <input type="number" name="stock" required min="0"  class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="tel" class=" form-control-label">Seuil alerte stock</label>
+      <input type="number" name="alerte" required min="0"  class="form-control">
+  </div>
+        
+    
+    <div class="form-group">
+      <label for="fourn" class=" form-control-label">sous categorie</label>
+      <select class="form-control" required  name="categorie">
+        
+        <%  
+        for(var j=0; j< categories.length; j++) {
+          
+          %>
+    <option value='<%= categories[j].nom %> '><%= categories[j].nom %> </option>
+    
+    <% } %>
+    </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="email" class=" form-control-label">Choisir une image</label>
+      <input type="file" name="image"  id="imx"   class="form-control">
+    </div>
+    </div>
+    
+    <% let name = "fich"; %>
+    <input type="hidden" id="fich_image" name="img">
+    <script>
+
+document.getElementById('imx').onchange= function(){
+     const reader = new FileReader();
+
+let files = document.getElementById('imx').files;
+reader.onload = async (event) => {
+  document.getElementById("fich_image").value =event.target.result;
+}
+reader.readAsDataURL(files[0]);
+
+}
+
+    
+     
+    
+    
+     </script>
+    
+               </p>
+  
+</div>
+
+
+
+         
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<div class="modal fade" id="largeModal_sc" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel_sc" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel_sc">Liste sous catégories</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          
+        
+      <%  if (locals?.categories && locals?.categories.length != 0) { %>
+        <div class="table-responsive table-responsive-data2">
+          
+            <table class="table table-borderless table-striped table-earning">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>categorie</th>
+                        <th>Actions</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                  <%   
+            for(var i=0; i< categories.length; i++) { %>
+                    <tr>
+                        <td><%= categories[i].id %></td>
+                        <td><%= categories[i].nom %></td>
+                        <td><%= categories[i].cat %></td>
+                       <td>
+                         <% let dlink3 = '/supprimer_sous_categorie/?id='+categories[i].id;
+                         
+                         let del = "delsc"+categories[i].id;
+                         let delx = "delsc"+categories[i].id+"x"; %>
+                          <div class="table-data-feature">
+                              
+                              <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                                  <i class="zmdi zmdi-delete"></i>
+                              </button>
+                              <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                              
+                          </div>
+                      </td>
+                    </tr>
+                    <% }  %>
+                   <script>
+    
+                    function sup(x)
+                    {
+                      if(confirm("vous risquez de supprimer des produits liés, souhaitez vous continuer ?")==true)
+                    {
+                      var s = x+"x";
+                      document.getElementById(s).click();
+                    }
+                    }
+                   </script>
+                </tbody>
+            </table>
+          </div>
+            <% }else{  %>
+              Aucune sous catégorie trouvée
+              <% } %>
+        
+        
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="largeModal_c" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel_c" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel_c">Liste catégories</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          
+        
+      <%  if (locals?.cat && locals?.cat.length != 0) { %>
+        <div class="table-responsive table-responsive-data2">
+          
+            <table class="table table-borderless table-striped table-earning">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                       
+                        <th>Actions</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                  <%   
+            for(var i=0; i< cat.length; i++) { %>
+                    <tr>
+                        <td><%= cat[i].id %></td>
+                        <td><%= cat[i].nom %></td>
+                      
+                       <td>
+                         <% let dlink3 = '/supprimer_categorie/?id='+cat[i].id;
+                         
+                         let del = "delc"+cat[i].id;
+                         let delx = "delc"+cat[i].id+"x"; %>
+                          <div class="table-data-feature">
+                              
+                              <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                                  <i class="zmdi zmdi-delete"></i>
+                              </button>
+                              <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                              
+                          </div>
+                      </td>
+                    </tr>
+                    <% }  %>
+                   <script>
+    
+                    function sup(x)
+                    {
+                      if(confirm("vous risquez de supprimer des sous_categories liées, souhaitez vous continuer ?")==true)
+                    {
+                      var s = x+"x";
+                      document.getElementById(s).click();
+                    }
+                    }
+                   </script>
+                </tbody>
+            </table>
+          </div>
+            <% }else{  %>
+              Aucune catégorie trouvée
+              <% } %>
+        
+        
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="smallmodal_ac" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel_ac" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="smallmodalLabel_ac">créer catégorie</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/ajouter_categorie" method="post">
+      <div class="modal-body">
+        <p>
+          <div class="form-group">
+            <label for="nom" class=" form-control-label">Nom catégorie</label>
+            <input type="text" required id="vat"  name="nom" class="form-control">
+        </div>
+         </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="smallmodal_asc" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel_asc" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="smallmodalLabel_asc">créer sous catégorie</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%  
+      if(locals?.cat && locals?.cat.length!=0) {
+        
+        %>
+      <form action="/ajouter_sous_categorie" method="post">
+      <div class="modal-body">
+        <p>
+          <div class="form-group">
+            <label for="nom" class=" form-control-label">Nom sous catégorie</label>
+            <input type="text" required id="vat"  name="nom" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="fourn" class=" form-control-label">catégorie</label>
+          <select class="form-control" required  name="categorie">
+            
+            <%  
+            for(var j=0; j< cat.length; j++) {
+              
+              %>
+        <option value='<%= cat[j].id %> '><%= cat[j].nom %> </option>
+        
+        <% } %>
+        </select>
+        </div>
+         </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+      </form>
+      <%  
+     }
+        else{
+        %>
+        Vous devez d'abord créer des catégories
+        <%  
+      }
+         
+         %>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="smallmodal_i" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel_i" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="smallmodalLabel_i">importer csv produit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/importer" method="post">
+      <div class="modal-body">
+        <p>
+          <div class="form-group">
+            <label for="nom" class=" form-control-label">CSV : </label>
+            <input type="file" required id="my-file" style="width:400px;" onchange="readText(event)" accept=".csv">
+           
+        </div>
+        <input type="hidden" class="form-control" name="fichier_csv" id="hid_f">
+
+        <script>
+
+async function readText(event) {
+  const file = event.target.files.item(0)
+  const text = await file.text();
+  
+  document.getElementById("hid_f").value = text;
+  
+}
+        </script>
+         </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+        <button type="submit" class="btn btn-primary">importer</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- end modal large -->
+<%- include('footer') -%>

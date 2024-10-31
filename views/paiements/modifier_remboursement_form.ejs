@@ -1,0 +1,61 @@
+<%- include('../header') -%>
+
+<div class="p-4 content">
+   
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Modifier un remboursement</h3>
+                     </div>
+                      <div class="panel-body">
+                        <% if (locals?.message) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= message %>  
+                              </div>           
+                            
+                       <% } %>
+                       <% if (locals?.factures && locals.factures.length != 0 && locals?.remb) { %>
+                        <form accept-charset="UTF-8" role="form" method="post" action="/modifier_remboursement">
+                        <fieldset>
+                            
+                            <div class="form-group">
+                                paiements
+                                
+                                    
+                                <select class="form-control" required  name="facture">
+                                    <option value='<%= remb.id_facture %>'><%= remb.id_facture+". "+remb.prenom+" "+remb.nom %></option>
+                                    <%  
+                                        for(var i=0; i< factures.length; i++) {
+                                            if(remb.id_facture != factures[i].id){ %>
+                                    <option value='<%= factures[i].id %>'><%= factures[i].id+". "+factures[i].prenom+" "+factures[i].nom %></option>
+                                    
+                                    <% }} %>
+                                    
+                                </select>
+                               
+                                <div>
+                                    <div class="form-group" style="margin-top:20px;">
+                                    <input class="form-control" required placeholder="Montant" id="mtn" name="montant" type="number" min="0" value="<%= remb.montant %>">
+                                </div>
+                                <script>
+                                    document.getElementById("mtn").value="<%= remb.montant %>";
+                                </script>
+                               <input type="hidden" name="id" value="<%= remb.id %>">
+                            <input class="btn btn-lg btn-success btn-block" style="margin-top:15px;" type="submit" value="enregistrer">
+                        </fieldset>
+                          </form>
+
+                          <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+  </div>
+
+<%- include('../footer') -%>

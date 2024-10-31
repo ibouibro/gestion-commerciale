@@ -1,0 +1,57 @@
+<%- include('../header') -%>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+           Facture
+        </div>
+        
+        <%  if (locals?.message) { %>
+            <div class="alert alert-success" role="alert">
+                <%= message %>  
+              </div>
+            <%  }  if (locals?.paiement && locals?.produits ) {
+        
+              
+        %>
+        
+        <div class="card-body">
+            <h5 class="card-title">Client : <%= paiement.prenom %>  <%= paiement.nom %>
+            </h5>
+            <p class="card-text">ID paiement : <%= paiement.id_facture %></p>
+           
+            
+            <p class="card-text">Numéro devis : <%= paiement.id_devis %></p>
+            <p class="card-text">Date : <%= paiement.date %></p>
+           
+            <div style="border : 1px solid gray;"></div>
+        <div class="card-footer">
+          <h5 class="card-title">Produits achetés
+           
+          </h5>
+          <%
+            
+           var total_ttc =0; 
+           var total_hors_taxe=0;
+          for (var i=0; i < produits.length; i++ ) {
+            var prix_u_hors_taxe = produits[i].prix-produits[i].remise;
+            total_hors_taxe = total_hors_taxe + prix_u_hors_taxe * produits[i].quantite;
+            total_ttc = total_ttc + prix_u_hors_taxe*produits[i].quantite +produits[i].val_tax* produits[i].quantite;
+            %>
+            <p class="card-text">Désignation produit : <%= produits[i].nom %></p>
+           
+            <p class="card-text">Quantité : <%= produits[i].quantite %></p>
+            <p class="card-text">Remise : <%= produits[i].remise %> FCFA</p>
+            <p class="card-text">Prix Unitaire hors taxe : <%= prix_u_hors_taxe %> FCFA</p>
+            <div style="border : 1px solid black;"></div>
+
+            <% } %>
+        </div>
+<div style="margin-bottom:18px;"></div>
+<p class="card-text">TVA:18 %</p>
+        <p class="card-text">Total hors taxes : <%= total_hors_taxe %> FCFA</p>
+        <p class="card-text">Total TTC : <%= total_ttc %> FCFA </p>
+
+        <% } %>
+        
+<%- include('../footer') -%>

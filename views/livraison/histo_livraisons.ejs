@@ -1,0 +1,73 @@
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+ 
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+   
+</div>
+
+<%  if (locals?.livraisons  && locals?.livraisons.length!= 0) {  %>
+  <p>historique livraisons, fournisseur : <%= livraisons[0].nom_f %>  </p>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+  
+    <div class="table-responsive table-responsive-data2" style="width:100%;" id="clientTable">
+      
+        <table class="table table-borderless table-striped table-earning">
+          <thead>
+            <tr>
+                <th>id</th>
+                <th>Date Livraison</th>
+                 <th>Montant</th>
+               
+               
+                
+              </tr>
+            </thead>
+            <tbody>
+              <%  
+              for(var i=0; i < livraisons.length; i++) { %>
+              <tr>
+                <td> <%= livraisons[i].id %> </td>
+                <td> <%= livraisons[i].date %> </td>
+              <td> <%= livraisons[i].montant %> </td>
+              
+             
+               
+              </tr
+            <% }  %>
+                
+           
+    Ce fournisseur n'a pas encore de livraisons
+    
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+        <% }else{  %>
+          aucune livraison trouvée
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>

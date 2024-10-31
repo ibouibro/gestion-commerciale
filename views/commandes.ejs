@@ -1,0 +1,157 @@
+
+
+
+
+
+
+<%- include('header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+ 
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+   
+</div>
+
+<%  if (locals?.commande && locals?.commande.length !=0) { 
+  %>
+  <p>historique commandes, fournisseur : <%= commande[0].nom_f %>  </p>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+  
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>Date</th>
+              <th>état</th>
+             
+              <th>montant</th>
+              <th>Actions</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <%  for(var i=0; i< commande.length; i++) { %>
+            <tr>
+              <td> <%= commande[i].id %> </td>
+              <td> <%= commande[i].date %> </td>
+            <td> <%= commande[i].etat %> </td>
+           
+            <td> <%= commande[i].montant %> </td>
+            
+            <td>
+              <% 
+              let targetx = "#largeModalx"+commande[i].id;
+             %>
+               <div class="table-data-feature">
+                   <button class="item"  data-toggle="modal" data-target="<%= targetx %>" data-placement="top" title="afficher">
+                       <i class="fa fa-eye"></i>
+                   </button>
+                   
+                   
+               </div>
+           </td>
+           
+              
+            </tr
+            <% } %>
+                
+          
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+        <% }else{  %>
+          aucune commande trouvée
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+<% for (var i=0; i< commande.length; i++){
+  
+  let target = "largeModalx"+commande[i].id; 
+  let label = "largeModalLabelx"+commande[i].id;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">informations Commande</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      
+
+      <div class="modal-body">
+   
+
+           <div class="supplier-container">
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <h2 class="supplier-name">commande: #<%= commande[i].id %></h2>
+                </div>
+                <div class="supplier-body">
+                    <p class="supplier-detail"> Date: <%= commande[i].date %></p>
+                    <p class="supplier-detail"> Etat: <%= commande[i].etat %></p>
+                    <p class="supplier-detail"> Fournisseur: <%= commande[i].nom %></p>
+                    <p class="supplier-detail"> Montant: <%= commande[i].montant %></p>
+                    <table class="order-table">
+                      <thead>
+                          <tr>
+                              
+                              <th>Quantité</th>
+                              <th>Produit</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <% for (var j=0; j< pc.length;j++){ 
+                         if(pc[j].id_commande == commande[i].id){ %>
+                          <tr>
+                              
+                              <td><%= pc[j].quantite %></td>
+                              <td><%= pc[j].nom %></td>
+                          </tr>
+                          <% }} %>
+                      </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+  
+           
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">fermer</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+
+
+
+<!-- end modal large -->
+<%- include('footer') -%>

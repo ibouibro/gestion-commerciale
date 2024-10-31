@@ -1,0 +1,95 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0; 
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+h2, h4, h5, h6 {
+    margin: 0 0 10px;
+    color: #333;
+}
+p {
+    margin: 5px 0;
+    color: #666;
+}
+.header, .footer {
+    background-color: #ffffff;
+    color: #111010;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+}
+.header img {
+    max-width: 120px;
+    margin-bottom: 10px;
+}
+.client-info, .total-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.client-info div, .total-section div {
+    width: 48%;
+}
+.items {
+    margin-top: 30px;
+}
+.items table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.items table, .items th, .items td {
+    border: 1px solid #ddd;
+}
+.items th, .items td {
+    padding: 12px;
+    text-align: left;
+}
+.items th {
+    background-color: #007bff;
+    color: #fff;
+}
+.total-section div {
+    text-align: right;
+}
+.footer {
+    background-color: #ffffff;
+    color: #0c0c0c;
+    text-align: center;
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+}
+.footer p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+.highlight {
+    font-weight: bold;
+    color: #333;
+}
+.print-button {
+    text-align: right;
+    margin-bottom: 20px;
+}
+.print-button button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.print-button button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,102 @@
+<%- include('../header') -%>
+
+<div class="p-4 content">
+   
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Enregistrer une annulation</h3>
+                     </div>
+                      <div class="panel-body">
+                        <% if (locals?.message) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= message %>  
+                              </div>            
+                            
+                       <% } %>
+                       <% if (locals?.factures && locals.factures.length != 0 && locals?.r_produits && locals.r_produits.length != 0) { %>
+                        <form accept-charset="UTF-8" role="form" method="post" action="/ajouter_annulation">
+                        <fieldset>
+                            
+                            <div class="form-group">
+                                paiements
+                                <select class="form-control" required  name="facture">
+                                    <%  
+                                        for(var i=0; i< factures.length; i++) { %>
+                                    <option value='<%= factures[i].id %>'><%= factures[i].id+". "+factures[i].prenom+" "+factures[i].nom %></option>
+                                    
+                                    <% } %>
+                                    
+                                </select>
+                               
+                               </div>
+                                <div class="form-group">
+                                    Ajouter un produit
+                                    <select class="form-control" required id="select"  name="id_commande">
+                                        <option value='<%= "" %>'>produit</option>
+                                        <% for(var i=0 ; i< r_produits.length; i++ ) { %>
+                                        <option value='<%= r_produits[i].nom %>'><%= r_produits[i].nom %> </option>
+                                        
+                                         <% } %>
+                                       
+                                        
+                                    </select>
+                                    
+                                </div>
+                                quantité 
+                                <div class="form-group">
+                                    <input class="form-control" id="qte" required placeholder="quantité" name="quantite" type="number" min="1" value="1">  
+    
+                                </div>
+                                <div class="form-group">
+                                <button type="button" class="btn btn-secondary" onclick="myFunction()" id="valider">valider la quantité</button>
+                            </div>
+                                <div class="form-group">
+                                    <textarea required name="noms" id="ta" value="" disabled cols="35" rows="13"></textarea>
+                                    <button type="button" class="btn btn-secondary" onclick="reset1()" id="reset">reset</button>
+                                </div>
+                               <input type="hidden" id="produit_qte" name="produits" value="">
+                                <script> function myFunction()
+                                {
+                                    var v =document.getElementById("select").value;
+                                    if(!(v == "" || v == null))
+                                {
+    
+                                    var x ="\n" ;
+                                    
+                                    x=x.concat(document.getElementById("qte").value)+" # "+v+" | ";
+                                    
+                                    
+                                    
+                                         document.getElementById("ta").value= document.getElementById("ta").value +x;
+                                         var y =  document.getElementById("ta").value;
+    
+                                         document.getElementById("produit_qte").value=y;
+    
+                                 
+                                }}
+    
+                                function reset1()
+                                {
+                                    document.getElementById("ta").value="";
+                                }
+                                 </script>
+            
+                            <input class="btn btn-lg btn-success btn-block" style="margin-top:15px;" type="submit" value="enregistrer">
+                        </fieldset>
+                          </form>
+
+                          <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+  </div>
+
+<%- include('../footer') -%>

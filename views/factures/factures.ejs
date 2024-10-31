@@ -1,0 +1,170 @@
+
+
+
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+    <a href="/ajouter_facture_form" class="au-btn au-btn-icon au-btn--green au-btn--small" >
+        <i class="zmdi zmdi-plus"></i>créer facture</a>
+        <button  class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
+          <i class="zmdi zmdi-plus"></i>créer facture sur devis</button>
+        <a href="/rapport_caisse" class="au-btn au-btn-icon au-btn--green au-btn--small" >
+          <i class="fas "></i>rapport de caisse</a>
+   
+</div>
+<%  if (locals?.factures && locals?.factures.length != 0) { %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    
+                    <th>Date</th>
+                   
+                    <th>Client</th>
+                    <th>payé</th>
+                    <th>reste à payer</th>
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+              let reste =0;
+                let pay=0;
+
+        for(var i=0; i< factures.length; i++) 
+        
+        {
+          for(var j=0;j<ttc.length;j++)
+{
+  if (ttc[j].id == factures[i].id)
+  {
+    reste= ttc[j].ttc;
+  }
+}
+reste = reste - factures[i].acompte;
+pay = factures[i].acompte;
+for(var j=0;j<paiement.length;j++)
+{
+  if (paiement[j].id_facture == factures[i].id)
+  {
+    reste= reste - paiement[j].s;
+    pay = pay + paiement[j].s;
+  }
+}
+          %>
+                <tr>
+                    <td><%= factures[i].id %></td>
+                    
+                    <td><%= factures[i].date %></td>
+                   
+                    <td><%= factures[i].prenom %> <%= factures[i].nom %> </td>
+                    <td><%= pay %></td>
+                    <td><%= reste %></td>
+                    <td>
+                     <% let dlink3 = '/supprimer_facture/?id='+factures[i].id;
+                     let dlink2 = '/one_facture/?id='+factures[i].id;
+                     let dlink1 = '/modifier_facture_form/?id='+factures[i].id;
+                     let target = "#largeModal"+factures[i].id;
+                     let targetx = "#largeModalx"+factures[i].id;
+                     let del = "del"+factures[i].id;
+                     let delx = "del"+factures[i].id+"x"; %>
+                      <div class="table-data-feature">
+                          <a href="<%= dlink2 %>" class="item"   data-placement="top" title="afficher">
+                              <i class="fa fa-eye"></i>
+                          </a>
+                          <a href="<%= dlink1 %>" class="item"  data-placement="top" title="Modifier" >
+                            <i class="zmdi zmdi-edit"></i>
+                        </a>
+                          <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                              <i class="zmdi zmdi-delete"></i>
+                          </button>
+                          <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               <script>
+
+                function sup(x)
+                {
+                  if(confirm(" souhaitez vous supprimer cette facture?")==true)
+                {
+                  var s = x+"x";
+                  document.getElementById(s).click();
+                }
+                }
+               </script>
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucune facture trouvée
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Créer une facture</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="/ajouter_facture_sd" method="post">
+      <div class="modal-body">
+  <div class="form-group">
+    Date
+    <input type="date" name="date" class="form-control">
+  </div>
+
+      <div class="form-group">
+        Devis
+         <select class="form-control"   class="col-md-6" required  name="id_devis">
+           <%   for(var j=0; j< devis.length; j++) {  %> 
+             <option value="<%= devis[j].id %> "><%= devis[j].id+". " %><%= devis[j].prenom %> <%= devis[j].nom %> </option>
+              <%  } %> </select>  
+            </div>
+             
+          </div>
+         
+    
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>

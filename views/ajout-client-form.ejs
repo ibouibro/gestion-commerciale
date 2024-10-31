@@ -1,0 +1,61 @@
+<%- include('header') -%>
+
+<div class="p-4 content">
+   
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Enregistrer client</h3>
+                     </div>
+                      <div class="panel-body">
+                        <% if (locals?.message) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= message %>  
+                              </div>            
+                            
+                       <% } %>
+                        <form accept-charset="UTF-8" role="form" method="post" action="/ajouter_client">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" required placeholder="Nom" name="nom" type="text" value="">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control" required placeholder="Prénom" name="prenom" type="text" value="">
+                            </div>
+                              <div class="form-group">
+                                <input class="form-control" required placeholder="E-mail" name="email" type="email">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" required placeholder="Téléphone" name="tel" type="number" min="0" value="">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" required placeholder="Adresse" name="adresse" type="text" value="">
+                            </div>
+                            
+                            <div class="form-group">
+                                <select class="form-control" required  name="sexe">
+                                    <option value='masculin'>masculin</option>
+                                    <option value="feminin">féminin</option>
+                                   
+                                    
+                                </select>
+    
+                            
+                            
+                            <input class="btn btn-lg btn-success btn-block" style="margin-top:15px;" type="submit" value="enregistrer">
+                        </fieldset>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+  </div>
+
+<%- include('footer') -%>

@@ -1,0 +1,127 @@
+
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+    <div class="form-h"><button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
+      <i class="zmdi zmdi-plus"></i>ajouter catégorie</button>
+      <%  if (locals?.categories && locals?.categories.length != 0) { %>
+      <input type="text" id="searchInput" class="form-control" style="width:300px;margin-left:8px;" placeholder="Search ...">
+      <% } %>
+ </div>
+    
+</div>
+<%  if (locals?.categories && locals?.categories.length != 0) { %>
+   <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< categories.length; i++) { %>
+                <tr>
+                    <td><%= categories[i].id %></td>
+                    <td><%= categories[i].nom %></td>
+                    
+                    <td>
+                     <% let dlink3 = '/supprimer_categorie/?id='+categories[i].id;
+                    
+                     let del = "del"+categories[i].id;
+                     let delx = "del"+categories[i].id+"x"; %>
+                      <div class="table-data-feature">
+                         
+                          <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                              <i class="zmdi zmdi-delete"></i>
+                          </button>
+                          <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               <script>
+
+                function sup(x)
+                {
+                  if(confirm("souhaitez vous supprimer ?")==true)
+                {
+                  var s = x+"x";
+                  document.getElementById(s).click();
+                }
+                }
+               </script>
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucune catégorie trouvée
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+
+
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Créer une catégorie</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="/ajouter_categorie" method="post">
+
+    <div class="modal-body">
+
+
+
+        <p>
+            <div class="form-group">
+              <label for="nom" class=" form-control-label">Nom catégorie</label>
+              <input type="text" required id="vat"  name="nom" class="form-control">
+          </div>
+           </p>
+
+         
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>

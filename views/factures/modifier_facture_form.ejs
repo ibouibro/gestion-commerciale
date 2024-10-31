@@ -1,0 +1,404 @@
+<%- include('../header') -%>
+
+
+<div class="main-content">
+
+  <form action="/modifier_facture" method="post">
+
+   <input type="hidden" name="id" value="<%= facture.id %> ">
+   <input type="hidden" name="id_devis" value="<%= facture.id_devis %> ">
+
+    <div class="form-group" style="margin:19px;">
+Client
+ <select class="form-control" style="width:200px;"  class="col-md-6" required  name="id_client">
+    <option value="<%= facture.id_client %> "><%= facture.id_client+". " %><%= facture.prenom %> <%= facture.nom %> </option>
+   <%   for(var j=0; j< clients.length; j++) {  
+     if(clients[j].id_client != facture.id_client){ %> 
+     <option value="<%= clients[j].id_client %> "><%= clients[j].id_client+". " %><%= clients[j].prenom %> <%= clients[j].nom %> </option>
+      <%  }} %> </select>  
+    </div>
+     
+        <!-- Input avec datalist pour remplacer le select -->
+        
+      <div id="group1" style="margin-top:12px;">
+        <!-- Trois inputs alignés horizontalement avec labels au-dessus -->
+        <% var p=0;  for(var j=0; j< pd.length; j++) {  
+           p=p+1;  %> 
+        <div class="form-horizontal">
+          <div>
+              <label for="input1"><% if(p==1){ %> Produit <% } %></label>
+              
+                  
+                  <input list="prod" onchange="f(event)" value="<%= pd[j].nom %>" required class="form-control" style="width:170px;" id="pdt" placeholder="chercher..." name="produit[]">
+                  
+                  <!-- Liste des suggestions -->
+                  <datalist id="prod">
+                    <option value="<%= pd[j].nom %>"></option>
+                    <%   for(var i=0; i< produits.length; i++) { 
+                        if(pd[j].nom != produits[i].nom){ %> 
+                    <option value="<%= produits[i].nom %>"></option>
+                      <% }} %> 
+                  </datalist>
+                
+          </div>
+          <div>
+            <label for="input1"> <% if(p==1){ %> quantité <% } %></label>
+            <input type="number" required class="form-control" value="<%= pd[j].quantite %>" name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
+          </div>
+          <div>
+            <label for="input1"><% if(p==1){ %> Stock <% } %></label>
+            <input type="text" value="0" name="stock[]" class="form-control" style="width:170px;"  placeholder="">
+          </div>
+          <div>
+            <label for="input2"><% if(p==1){ %> prix <% } %></label>
+            <input type="text" value="0" class="form-control" name="prix[]" style="width:170px;" id="input2" placeholder="">
+          </div>
+          <div>
+            <label for="input3"><% if(p==1){ %> montant <% } %></label>
+            <input type="text" value="0" name="montant[]" class="form-control" style="width:170px;" id="input3" placeholder="">
+          </div>
+          <div>
+            <div></div>
+            <input type="hidden" name="prod[]">
+          </div>
+         
+          <% if(p==1){ %>
+          <div style="width:12px;"></div>  <% } else{ %>
+            <button  onclick="del1(event)" type="button"  class="item" data-toggle="tooltip" data-placement="top" title="supprimer">  <i class="zmdi zmdi-delete"></i>  </button> 
+            <% } %>
+           </div>
+           <% } %>
+      </div>
+
+     
+      <div class="card-body card-block">
+    
+        <div class="row form-group">
+            <div class="col col-md-10">
+              
+            </div>
+            <div class="col col-md-4">
+              <button type="button" onclick="ajout1(event)"   class="item" data-toggle="tooltip" data-placement="top" title="ajouter">
+                <i class="fas fa-plus-square"></i>
+              </button>
+            </div>
+        </div> 
+      </div>
+        <!-- Trois inputs alignés verticalement avec labels à côté -->
+         <div class="form-h">
+        <div class="form-vertical" style="margin-left:30px;">
+          <div class="input-group">
+              <div style="width:120px;">
+            <label for="input4">montant hors taxes</label></div>
+            <div style="width:200px;"><input type="number" name="ht" class="form-control" style="width:200px;" id="ht" placeholder=""></div>
+          </div>
+          <div class="input-group">
+            <div style="width:120px;">
+          <label for="input4">montant remise</label></div>
+          <div style="width:200px;"><input type="number" name="remise" class="form-control" style="width:200px;" id="remise" placeholder=""></div>
+        </div>
+          <div class="input-group">
+              <div style="width:120px;"> <label for="input5">Taxes (18%)</label></div>
+              <div style="width:200px;"> <input type="number" name="taxe" class="form-control" style="width:200px;" id="taxe" placeholder=""></div>
+          </div>
+          <div class="input-group">
+              <div style="width:120px;"> <label for="input6">montant TTC</label></div>
+              <div style="width:200px;"> <input type="number" name="ttc" class="form-control" style="width:200px;" id="ttc" placeholder=""></div>
+          </div>
+        </div>
+        <div class="form-vertical" style="margin-left:50px;">
+          <div class="input-group">
+          <div style="width:50px;">
+            
+              <label for="input4">tva</label></div>
+            <div style="width:30px;"><input type="checkbox" onchange="f2()" id="tva" name="tva" value="tva" class="form-control" style="width:30px;"  placeholder=""></div>
+          </div>
+        
+<div class="input-group">
+          <div style="width:90px;">
+            <label for="input4">Remise %</label></div>
+            <div style="width:100px;"><input type="number" required oninput="f2()" id="rem" name="rem" min="0" value="0"  class="form-control" style="width:100px;"  placeholder=""></div>
+          </div>
+          <div class="input-group">
+            <div style="width:90px;">
+              <label for="input4">Acompte</label></div>
+              <div style="width:100px;"><input type="number" required name="acompte" min="0" value="<%= facture.acompte %>"  class="form-control" style="width:150px;"  placeholder=""></div>
+            </div>
+          </div>
+        </div>
+        
+        </div>
+      <button type="submit" style="margin:23px;" class="btn btn-primary">Enregistrer</button>
+    </form>
+    </div>
+  </div>
+    <script>
+      function del1(event)
+      {
+  event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode);
+  let child= document.getElementById("group1").children;
+
+                                 let tax=0;
+                                 let ht =0;
+                                 let remise =0;
+                                   for(var i=0;i<child.length;i++)
+                                   {
+                                    let nbr = parseInt(child[i].children[3].children[1].value);
+                                    
+                                    child[i].children[4].children[1].value=nbr *child[i].children[1].children[1].value;
+                                    let val =  parseInt(child[i].children[4].children[1].value);
+                                    if(document.getElementById("tva").checked==true){
+                                      tax= tax + val*18/100; }
+                                    ht = ht + val;
+                                    remise = remise + val*(document.getElemnyById("rem").value)/100;
+                                   }
+                                   document.getElementById("taxe").value=tax;
+                                   document.getElementById("ht").value=ht;
+                                   let val2 = parseInt(document.getElementById("taxe").value)+parseInt(document.getElementById("ht").value);
+                                   document.getElementById("ttc").value=(val2-remise);
+                                   document.getElementById("remise").value=remise;
+      }
+  function ajout1(event)
+  {
+    let span = `
+               <div class="form-horizontal">
+          <div>
+              
+              
+                  
+                  <input list="prod"  onchange="f(event)" class="form-control" style="width:170px;" placeholder="chercher..." name="produit[]">
+                  
+                  <!-- Liste des suggestions -->
+                  <datalist id="prod">
+                    <%   for(var i=0; i< produits.length; i++) {  %> 
+                    <option value="<%= produits[i].nom %>"></option>
+                      <% } %> 
+                  </datalist>
+                
+          </div>
+          <div>
+           <div></div>
+            <input type="number" required class="form-control" name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
+          </div>
+          <div>
+          <div></div>
+            <input type="text" value="0" class="form-control" style="width:170px;" name="stock[]"  placeholder="">
+          </div>
+          <div>
+            <div></div>
+            <input type="text" value="0" class="form-control" style="width:170px;" name="prix[]"  placeholder="">
+          </div>
+          <div>
+            <div></div>
+            <input type="text" value="0" class="form-control" style="width:170px;" name="montant[]"  placeholder="">
+          </div>
+          <div>
+            <div></div>
+            <input type="hidden" name="prod[]">
+          </div>
+          
+          <button  onclick="del1(event)" type="button"  class="item" data-toggle="tooltip" data-placement="top" title="supprimer">  <i class="zmdi zmdi-delete"></i>  </button> 
+        </div>
+        `;
+      
+  var a = document.getElementById("group1").innerHTML;
+  document.getElementById("group1").innerHTML= a+ span;
+
+  let child= document.getElementById("group1").children;
+
+let tax=0;
+let ht =0;
+let remise =0;
+  for(var i=0;i<child.length;i++)
+  {
+   let nbr = parseInt(child[i].children[3].children[1].value);
+
+   child[i].children[4].children[1].value=nbr *child[i].children[1].children[1].value;
+   let val =  parseInt(child[i].children[4].children[1].value);
+   if(document.getElementById("tva").checked==true){
+    tax= tax + val*18/100; }
+   ht = ht + val;
+   remise = remise + val*(document.getElementById("rem").value)/100;
+  }
+  document.getElementById("taxe").value=tax;
+  document.getElementById("ht").value=ht;
+  let val2 = parseInt(document.getElementById("taxe").value)+parseInt(document.getElementById("ht").value);
+  document.getElementById("ttc").value=(val2-remise);
+  document.getElementById("remise").value=remise;
+
+  f2();
+
+}
+
+
+  async function f(event) {
+                                  try {
+                                    const response = await fetch('/api/product');
+                                    const x = await response.json();
+                                    
+                                 
+                                  
+                                
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    
+                                    
+                                    x.forEach(product => {
+                                    if(event.target.value==product.nom)
+                                    {
+                                      event.target.parentNode.parentNode.children[5].children[1].value=product.id_produit;
+                                      event.target.parentNode.parentNode.children[2].children[1].value=product.qte_en_stock;
+                                     
+                                      if(product.qte_en_stock==0)
+                                    {
+                                      event.target.parentNode.parentNode.children[2].children[1].style.color="red";
+                                      event.target.parentNode.parentNode.children[2].children[1].value="stock épuisé";
+                                    }
+                                    event.target.parentNode.parentNode.children[3].children[1].value=product.prix;
+
+
+                                    }
+                                    });
+
+                                
+
+                                
+
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+
+                                  f3();
+                                }
+
+
+                                function f1(event)
+                                {
+                                  
+
+                                 let child= event.target.parentNode.parentNode.parentNode.children;
+
+                                 let tax=0;
+                                 let ht =0;
+                                 let remise =0;
+                                   for(var i=0;i<child.length;i++)
+                                   {
+                                    let nbr = parseInt(child[i].children[3].children[1].value);
+
+                                    child[i].children[4].children[1].value=nbr *child[i].children[1].children[1].value;
+                                    let val =  parseInt(child[i].children[4].children[1].value);
+                                    if(document.getElementById("tva").checked==true){
+                                      tax= tax + val*18/100; }
+                                    ht = ht + val;
+                                    remise = remise + val*(document.getElementById("rem").value)/100;
+                                   }
+                                   document.getElementById("taxe").value=tax;
+                                   document.getElementById("ht").value=ht;
+                                   let val2 = parseInt(document.getElementById("taxe").value)+parseInt(document.getElementById("ht").value);
+                                   document.getElementById("ttc").value=(val2-remise);
+                                   document.getElementById("remise").value=remise;
+                                }
+                               
+
+
+                                function f3()
+                                {
+                                  
+
+                                 let child= document.getElementById("group1").children;
+
+                                 let tax=0;
+                                 let ht =0;
+                                 let remise =0;
+                                   for(var i=0;i<child.length;i++)
+                                   {
+                                    let nbr = parseInt(child[i].children[3].children[1].value);
+
+                                    child[i].children[4].children[1].value=nbr *child[i].children[1].children[1].value;
+                                    let val =  parseInt(child[i].children[4].children[1].value);
+                                    if(document.getElementById("tva").checked==true){
+                                      tax= tax + val*18/100; }
+                                    ht = ht + val;
+                                    remise = remise + val*(document.getElementByid("rem").value)/100;
+                                   }
+                                   document.getElementById("taxe").value=tax;
+                                   document.getElementById("ht").value=ht;
+                                   let val2 = parseInt(document.getElementById("taxe").value)+parseInt(document.getElementById("ht").value);
+                                   document.getElementById("ttc").value=(val2-remise);
+                                   document.getElementById("remise").value=remise;
+                                }
+                               
+
+
+                                async function f2() {
+                                  try {
+                                    const response = await fetch('/api/product');
+                                    const x = await response.json();
+                                    
+                                 
+                                    let child= document.getElementById("group1").children;
+
+                                    for(var i=0; i<child.length;i++)
+                                  {
+                                    x.forEach(product => {
+                                    if(child[i].children[0].children[1].value==product.nom)
+                                    {
+                                      child[i].children[5].children[1].value=product.id_produit;
+                                      child[i].children[2].children[1].value=product.qte_en_stock;
+                                      
+                                      if(product.qte_en_stock==0)
+                                    {
+                                      child[i].children[2].children[1].style.color="red";
+                                      child[i].children[2].children[1].value="stock épuisé";
+                                    }
+                                    child[i].children[3].children[1].value=product.prix;
+
+
+                                    }
+                                    });
+                                  }
+
+
+                                
+                                  let tax=0;
+let ht =0;
+let remise =0;
+  for(var i=0;i<child.length;i++)
+  {
+   let nbr = parseInt(child[i].children[3].children[1].value);
+
+   child[i].children[4].children[1].value=nbr *child[i].children[1].children[1].value;
+   let val =  parseInt(child[i].children[4].children[1].value);
+   if(document.getElementById("tva").checked==true){
+    tax= tax + val*18/100; }
+   ht = ht + val;
+   remise = remise + val*(document.getElementById("rem").value)/100;
+  }
+  document.getElementById("taxe").value=tax;
+  document.getElementById("ht").value=ht;
+  let val2 = parseInt(document.getElementById("taxe").value)+parseInt(document.getElementById("ht").value);
+  document.getElementById("ttc").value=(val2-remise);
+  document.getElementById("remise").value=remise;
+
+                                    
+                                    
+                                  
+
+                                
+
+                                
+
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+                                }
+
+                                window.onload = f2;
+                                
+    </script>
+<%- include('../footer') -%>

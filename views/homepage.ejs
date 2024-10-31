@@ -1,0 +1,127 @@
+<%- include('header') -%>
+
+<div class="main-content">
+  <div class="section__content section__content--p30">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="overview-wrap">
+                      <h2 class="title-1">overview</h2>
+
+                  </div>
+              </div>
+          </div>
+          
+          <div class="row m-t-25">
+              <div class="col-sm-6 col-lg-3" id="c1">
+                  <div class="overview-item overview-item--c1" >
+                      <div class="overview__inner">
+                          <div class="overview-box clearfix">
+                              <div class="icon">
+                                <p>
+                                  <i class="zmdi zmdi-account-o"></i>
+                              </div></p>
+                              <div class="text">
+                                <% if(locals.clients== null || locals.clients==0){ %>
+                                  <p><h2>0</h2></p>
+
+                                    <% }else{ %>
+                                  <p><h2><%= clients %></h2></p>
+                                  <% } %>
+                                  <span>clients</span>
+                              </div>
+                          </div>
+                          <div class="overview-chart">
+                              <canvas id="widgetChart1"></canvas>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                  <div class="overview-item overview-item--c2">
+                      <div class="overview__inner">
+                          <div class="overview-box clearfix">
+                              <div class="icon">
+                                  <i class="zmdi zmdi-shopping-cart"></i>
+                              </div>
+                              <div class="text">
+                                <% if(locals.solds== null || locals.solds==0){ %>
+                                    <h2>0</h2>
+  
+                                      <% }else{ %>
+                                    <h2><%= solds %></h2>
+                                    <% } %>
+                                  <span>produits vendus</span>
+                              </div>
+                          </div>
+                          <div class="overview-chart">
+                              <canvas id="widgetChart2"></canvas>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-lg-3" id="c3">
+                  <div class="overview-item overview-item--c3" >
+                      <div class="overview__inner">
+                          <div class="overview-box clearfix">
+                              <div class="icon">
+                                  <i class="zmdi zmdi-calendar-note"></i>
+                              </div>
+                              <div class="text">
+                                <% if(locals.commandes== null || locals.commandes==0){ %>
+                                  <h2>0</h2>
+  
+                                      <% }else{ %>
+                                    <h2><%= commandes %></h2>
+                                    <% } %>
+                                  <span>commandes à livrer</span>
+                              </div>
+                          </div>
+                          <div class="overview-chart">
+                              <canvas id="widgetChart3"></canvas>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                  <div class="overview-item overview-item--c4">
+                      <div class="overview__inner">
+                          <div class="overview-box clearfix">
+                            <p>  <div class="icon">
+                                  <i class="zmdi zmdi-money"></i>
+                              </div></p>
+                              <p>
+                              <div class="text">
+                                <p>
+                                <% if(locals.earnings== null || locals.earnings==0){ %>
+                                   <h2>0</h2>
+  
+                                      <% }else{ %>
+                                    <h2><%= earnings %></h2>
+                                    <% } %>
+                                </p>
+                                <p>
+                                  <span>total ventes</span></p>
+                              </div></p>
+                          </div>
+                          <div class="overview-chart">
+                              <canvas id="widgetChart4"></canvas>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+         
+          
+          
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="copyright">
+                      <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<%- include('footer') -%>

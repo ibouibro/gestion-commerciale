@@ -1,0 +1,35 @@
+<%- include('header') -%>
+
+
+<%  if (locals?.categorie) { %>
+    <div class="panel panel-default" style="margin-left:14px;">
+          <div class="panel-heading">
+            <h3 class="panel-title">Modifier sous catégories</h3> 
+            <div style="border-bottom: 1px solid gray;margin-bottom:9px;"></div>
+         </div>
+          <div class="panel-body">
+            <% if (locals?.message) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= message %>  
+                  </div>         
+                
+           <% } %>
+            <form accept-charset="UTF-8" role="form" method="post" action="/modifier_categorie">
+            <fieldset>
+                
+                <div class="form-group">
+                    <input class="form-control" required placeholder="Sous catégorie" name="nom" type="text" value="<%= categorie.nom %>   ">
+                </div>
+                <input type="hidden" name="id" value="<%= categorie.id_categorie %>">
+                <input type="hidden" name="a_nom" value="<%= categorie.nom %>">
+                   
+                
+                <input class="btn btn-lg btn-success btn-block" style="margin-top:15px;" type="submit" value="Enregistrer la modification">
+            </fieldset>
+              </form>
+        </div>
+    </div>
+    <% }  %>
+ 
+
+<%- include('footer') -%>

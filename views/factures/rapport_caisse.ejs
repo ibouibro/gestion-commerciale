@@ -1,0 +1,39 @@
+<%- include('../header') -%>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+           Rapport de caisse
+        </div>
+        
+        <%  if (locals?.message) { %>
+            <div class="alert alert-success" role="alert">
+                <%= message %>  
+              </div>
+            <%  }  if (locals?.facture && locals?.produits ) {
+        
+            
+        %>
+        
+        <%  if (locals?.rapport) {
+            var s = rapport.entrees - rapport.sorties;
+
+            %>
+
+        <div class="card-body">
+           
+        
+            <p class="card-text">total entrées : <%= rapport.entrees %></p>
+            <p class="card-text">Total sorties: <%= rapport.sorties %></p>
+            <p class="card-text">solde: <%= facture.id_devis %></p>
+           
+</div>
+
+<%   } %>
+        <div class="card-footer">
+        </div>
+</div>
+</div>
+        
+
+<%- include('../footer') -%>

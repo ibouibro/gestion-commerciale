@@ -1,0 +1,77 @@
+<%- include('header') -%>
+
+
+<div class="col-md-4 col-md-offset-4" style="margin-left:14px;">
+    <%  if (locals?.categories) { %>
+    <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Les sous catégories</h3> <a href="/afficher_sous_categorie" style="margin-bottom:13px;" class="btn btn-info btn-sm">Afficher</a>
+            <div style="border-bottom: 1px solid gray;margin-bottom:9px;"></div>
+         </div>
+          <div class="panel-body">
+            <% if (locals?.message1) { %>
+              <div class="alert alert-success" role="alert">
+                <%= message1 %>  
+              </div>            
+                
+           <% } %>
+            <form accept-charset="UTF-8" role="form" method="post" action="/ajouter_sous_categorie">
+            <fieldset>
+                
+                <div class="form-group">
+                    <input class="form-control" required placeholder="Sous catégorie" name="sous_categorie" type="text" value="">
+                </div>
+                catégorie
+                <div class="form-group">
+                    <select class="form-control" required  name="categorie">
+                      <% if (locals?.categories && locals.categories.length != 0) { %>
+                        <%   for(var i=0; i< categories.length; i++) { %>
+                        <option value='<%= categories[i].nom %>'> <%= categories[i].nom %> </option>
+                       
+                        <% }} %>
+                        
+                    </select>
+                </div>
+                   
+                
+                <input class="btn btn-lg btn-success btn-block" style="margin-top:15px;" type="submit" value="Créer la sous catégorie">
+            </fieldset>
+              </form>
+        </div>
+    </div>
+    <% }  %>
+    <div style="border:1px solid black; margin:19px;"></div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Les catégories</h3><a href="/afficher_categorie" style="margin-bottom:12px;" class="btn btn-info btn-sm">Afficher</a>
+          <div style="border-bottom: 1px solid gray;margin-bottom:9px;"></div>
+        </div>
+       </div>
+        <div class="panel-body">
+          <% if (locals?.message2) { %>
+            <div class="alert alert-success" role="alert">
+              <%= message2 %>  
+            </div>           
+              
+         <% } %>
+          <form accept-charset="UTF-8" role="form" method="post" action="/ajouter_categorie">
+          <fieldset>
+              
+              <div class="form-group">
+                  <input class="form-control" required placeholder="catégorie" name="categorie" type="text" value="">
+              </div>
+              
+                 
+              
+              <input class="btn btn-lg btn-success btn-block" style="margin-top:15px;" type="submit" value="créer la catégorie">
+          </fieldset>
+            </form>
+      </div>
+  </div>
+
+</div>
+   
+ 
+
+<%- include('footer') -%>

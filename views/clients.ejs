@@ -1,0 +1,280 @@
+
+
+
+<%- include('header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.r_message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= r_message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+    <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
+        <i class="zmdi zmdi-plus"></i>ajouter client</button>
+   
+</div>
+<%  if (locals?.r_client && locals?.r_client.length != 0) { %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Prénom Nom</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< r_client.length; i++) { %>
+                <tr>
+                    <td><%= r_client[i].id_client %></td>
+                    <td><%= r_client[i].prenom %> <%= r_client[i].nom %></td>
+                    <td><%= r_client[i].tel %></td>
+                    <td><%= r_client[i].adresse %></td>
+                   
+                    <td>
+                     <% let dlink3 = '/supprimer_client/?id='+r_client[i].id_client;
+                     let target = "#largeModal"+r_client[i].id_client;
+                     let targetx = "#largeModalx"+r_client[i].id_client;
+                     let del = "del"+r_client[i].id_client;
+                     let delx = "del"+r_client[i].id_client+"x"; %>
+                      <div class="table-data-feature">
+                          <button class="item"  data-toggle="modal" data-target="<%= targetx %>" data-placement="top" title="afficher">
+                              <i class="fa fa-eye"></i>
+                          </button>
+                          <button class="item"  data-placement="top" title="Modifier" data-toggle="modal" data-target="<%= target %>">
+                              <i class="zmdi zmdi-edit"></i>
+                          </button>
+                          <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                              <i class="zmdi zmdi-delete"></i>
+                          </button>
+                          <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               <script>
+
+                function sup(x)
+                {
+                  if(confirm("vous risquez de supprimer les devis et achats liés à ce client, souhaitez vous continuer ?")==true)
+                {
+                  var s = x+"x";
+                  document.getElementById(s).click();
+                }
+                }
+               </script>
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucun client trouvé
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+<% for (var i=0; i< r_client.length; i++){
+  
+  let target = "largeModal"+r_client[i].id_client; 
+  let label = "largeModalLabel"+r_client[i].id_client;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">Modifier client</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <form action="/modifier_client" method="post">
+
+      <div class="modal-body">
+        <p>
+<input type="hidden" name="id" value="<%= r_client[i].id_client %>">
+  <div class="card-body card-block">
+    <div class="form-group">
+        <label for="prenom" class=" form-control-label">Prénom</label>
+        <input type="text" required id="prenom" value="<%= r_client[i].prenom %>" name="prenom" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="nom" class=" form-control-label">Nom</label>
+        <input type="text" required id="vat" value="<%= r_client[i].nom %>" name="nom" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="adresse" class=" form-control-label">Adresse</label>
+        <input type="text" required id="street" name="adresse" value="<%= r_client[i].adresse %>" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="tel" class=" form-control-label">Téléphone</label>
+        <input type="number" name="tel" required min="0" value="<%= r_client[i].tel %>" class="form-control">
+    </div>
+
+    
+    <div class="form-group">
+      <label for="email" class=" form-control-label">Email</label>
+      <input type="email" name="email"  value="<%= r_client[i].email %>" class="form-control">
+  </div>
+
+</div>
+
+
+
+           </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+<% for (var i=0; i< r_client.length; i++){
+  
+  let target = "largeModalx"+r_client[i].id_client; 
+  let label = "largeModalLabelx"+r_client[i].id_client;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">informations client</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      
+
+      <div class="modal-body">
+      
+
+
+
+<div class="supplier-container">
+  <div class="supplier-card">
+      <div class="supplier-header">
+          <h2 class="supplier-name">Nom: <%= r_client[i].prenom %> <%= r_client[i].nom %></p></h2>
+      </div>
+      <div class="supplier-body">
+          <p class="supplier-detail"><i class="fas fa-map-marker-alt"></i> Adresse: <%= r_client[i].adresse %></p>
+          <p class="supplier-detail"><i class="fas fa-phone"></i> Téléphone: <%= r_client[i].tel %></p>
+          <p class="supplier-detail"><i class="fas fa-envelope"></i> Email: <%= r_client[i].email %></p>
+
+          <% if(locals?.nbre_achat){
+          for (var j=0; j< nbre_achat.length; j++){
+
+            if(nbre_achat[j].id_client == r_client[i].id_client ){
+          
+            %>
+            <p class="supplier-detail"><b>achats :</b><%= nbre_achat[j].c1 %> <% let dlink ="/histo_achat/?id="+r_client[i].id_client; %> 
+              <a href="<%= dlink %>" style="height:30px;margin-left:10px;" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                <i class=""></i>Historique</a>
+            </p>
+            <% }}} %>    
+          
+           
+          
+      </div>
+  </div>
+</div>
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">fermer</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Créer un client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="/ajouter_client" method="post">
+
+    <div class="modal-body">
+      <p>
+
+<div class="card-body card-block">
+  <div class="form-group">
+      <label for="prenom" class=" form-control-label">Prénom</label>
+      <input type="text" required id="prenom"  name="prenom" class="form-control">
+  </div>
+  <div class="form-group">
+      <label for="nom" class=" form-control-label">Nom</label>
+      <input type="text" required id="vat"  name="nom" class="form-control">
+  </div>
+  <div class="form-group">
+      <label for="adresse" class=" form-control-label">Adresse</label>
+      <input type="text" required id="street" name="adresse" class="form-control">
+  </div>
+  
+  <div class="form-group">
+      <label for="tel" class=" form-control-label">Téléphone</label>
+      <input type="number" name="tel" required min="0"  class="form-control">
+  </div>
+
+  
+  <div class="form-group">
+    <label for="email" class=" form-control-label">Email</label>
+    <input type="email" name="email"  class="form-control">
+</div>
+
+</div>
+
+
+
+         </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- end modal large -->
+<%- include('footer') -%>

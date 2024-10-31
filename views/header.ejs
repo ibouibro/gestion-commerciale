@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Dashboard</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="/css/theme.css" rel="stylesheet" media="all">
+
+</head>
+<style>
+
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-table th, .order-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table th {
+    background-color: #f7f7f7;
+}
+
+.order-table tfoot td {
+    font-size: 1.2em;
+}
+
+.text-right {
+    text-align: right;
+}
+
+tfoot td {
+    background-color: #f4f4f4;
+    padding: 15px 10px;
+    border-top: 2px solid #e74c3c;
+}
+
+
+.product-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 350px;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+}
+
+.product-image img {
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-info {
+    padding: 20px;
+    text-align: center;
+}
+
+.product-title {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.product-brand {
+    font-size: 1em;
+    color: #555;
+    margin: 10px 0;
+}
+
+.product-brand span {
+    font-weight: bold;
+}
+
+.product-description {
+    color: #777;
+    font-size: 0.9em;
+    margin: 10px 0;
+}
+
+.product-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #e74c3c;
+}
+
+.product-stock {
+    font-size: 1em;
+    color: #555;
+    margin: 10px 0;
+}
+
+.product-stock span {
+    font-weight: bold;
+}
+
+.buy-now {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buy-now:hover {
+    background-color: #c0392b;
+}
+    /* Conteneur parent pour l'alignement horizontal */
+    .form-horizontal {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+  
+    .form-h {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 20px;
+    }
+    /* Alignement vertical pour les labels et inputs */
+    .form-horizontal > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    /* Alignement vertical pour les inputs avec label à côté */
+    .form-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .form-vertical .input-group {
+      display: flex;
+      align-items: center;
+    }
+  
+    label {
+      margin-bottom: 5px;
+    }
+  
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 150px;
+    }
+
+ 
+
+
+.supplier-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.supplier-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.supplier-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.supplier-header {
+    text-align: center;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.supplier-name {
+    font-size: 1.6em;
+    color: #333;
+}
+
+.supplier-body {
+    text-align: left;
+}
+
+.supplier-detail {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.supplier-detail i {
+    margin-right: 10px;
+    color: #e74c3c;
+}
+
+.supplier-detail a {
+    color: #e74c3c;
+    text-decoration: none;
+}
+
+.supplier-detail a:hover {
+    text-decoration: underline;
+}
+
+  </style>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        <header class="header-mobile d-block d-lg-none">
+            <div class="header-mobile__bar">
+                <div class="container-fluid">
+                    <div class="header-mobile-inner">
+                        <a class="logo" href="index.html">
+                            <img src="/images/icon/logo.png" alt="CoolAdmin" />
+                        </a>
+                        <button class="hamburger hamburger--slider" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar-mobile">
+                <div class="container-fluid">
+                    <ul class="navbar-mobile__list list-unstyled">
+                        <li>
+                            <a href="/homepage">
+                              <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/clients">
+                                <i class="fas fa-user"></i>Clients</a>
+                        </li>
+                        <li>
+                            <a href="/fournisseurs">
+                                <i class="fas fa-truck"></i>Fournisseurs</a>
+                        </li>
+                        <li>
+                            <a href="/produits">
+                                <i class="fas fa-box"></i>Produits</a>
+                        </li>
+                        <li>
+                            <a href="/categories">
+                                <i class="fas fa-list-ul"></i>Catégories</a>
+                        </li>
+                        <li>
+                            <a href="/sous_categories">
+                                <i class="fas fa-list-ul"></i>Sous catégories</a>
+                        </li>
+                        <li>
+                            <a href="/all_commandes">
+                                <i class="fas fa-shopping-cart"></i>Commandes</a>
+                        </li>
+                        <li>
+                            <a href="/livraisons">
+                                <i class="fas fa-shipping-fast"></i>Livraisons</a>
+                        </li>
+                        <li>
+                            <a href="/devis">
+                                <i class="fas fa-copy"></i>Devis</a>
+                        </li>
+
+                        <li>
+                            <a href="/factures">
+                                <i class="fas fa-copy"></i>Factures</a>
+                        </li>
+                        <li>
+                            <a href="/inventaires">
+                                <i class="fas fa-copy"></i>Inventaires</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="/paiements">
+                                <i class="fas fa-credit-card"></i>Paiements</a>
+                        </li>
+                        <li>
+                            <a href="/depenses">
+                                <i class="fas fa-credit-card"></i>Dépenses</a>
+                        </li>
+                        <li>
+                            <a href="/ajouter-utilisateur-form">
+                                <i class="fas fa-plus-square"></i>créer utilisateur</a>
+                        </li>
+                        <li>
+                            <a href="/deconnecter">
+                                <i class="fas fa-arrow-circle-left"></i>déconnecter</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="logo">
+                <a href="#">
+                    <img src="/images/icon/logo.png" alt="Cool Admin" />
+                </a>
+            </div>
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        
+                        <li>
+                            <a href="/homepage">
+                              <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/clients">
+                                <i class="fas fa-user"></i>Clients</a>
+                        </li>
+                        <li>
+                            <a href="/fournisseurs">
+                                <i class="fas fa-truck"></i>Fournisseurs</a>
+                        </li>
+                        <li>
+                            <a href="/produits">
+                                <i class="fas fa-box"></i>Produits</a>
+                        </li>
+                        <li>
+                            <a href="/categories">
+                                <i class="fas fa-list-ul"></i>Catégories</a>
+                        </li>
+                        <li>
+                            <a href="/sous_categories">
+                                <i class="fas fa-list-ul"></i>Sous catégories</a>
+                        </li>
+                        <li>
+                            <a href="/all_commandes">
+                                <i class="fas fa-shopping-cart"></i>Commandes</a>
+                        </li>
+                        <li>
+                            <a href="/livraisons">
+                                <i class="fas fa-shipping-fast"></i>Livraisons</a>
+                        </li>
+                        <li>
+                            <a href="/devis">
+                                <i class="fas fa-copy"></i>Devis</a>
+                        </li>
+
+                        <li>
+                            <a href="/factures">
+                                <i class="fas fa-copy"></i>Factures</a>
+                        </li>
+                        <li>
+                            <a href="/inventaires">
+                                <i class="fas fa-copy"></i>Inventaires</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="/paiements">
+                                <i class="fas fa-credit-card"></i>Paiements</a>
+                        </li>
+                        <li>
+                            <a href="/depenses">
+                                <i class="fas fa-credit-card"></i>Dépenses</a>
+                        </li>
+                        <li>
+                            <a href="/ajouter-utilisateur-form">
+                                <i class="fas fa-plus-square"></i>créer utilisateur</a>
+                        </li>
+                        <li>
+                            <a href="/deconnecter">
+                                <i class="fas fa-arrow-circle-left"></i>déconnecter</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
+
+          <!-- PAGE CONTAINER-->
+          <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            
+                            <div class="header-button" id="stock-table-body">
+                                <div class="noti-wrap">
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-comment-more"></i>
+                                        <span class="quantity" id="quantity">1</span>
+                                        <div class="mess-dropdown js-dropdown">
+                                            <div class="mess__title" id="title" >
+                                                
+                                            </div>
+                                            <div id="message">
+                                            <div class="mess__item" id="item">
+                                               
+                                            </div>
+                                        </div>
+                                            
+                                            <div class="mess__footer">
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                
+                            </div>
+
+                            <script>
+                                // Fonction pour récupérer le stock en temps réel
+                                async function fetchStockData() {
+                                  try {
+                                    const response = await fetch('/api/stock');
+                                    const stockData = await response.json();
+                                    
+                                    // Sélection du tableau dans lequel les données seront affichées
+                                    const stockTable = document.getElementById('stock-table-body');
+                                    ; // Réinitialiser le contenu
+
+                                let row=``;
+                           
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    stockData.forEach(product => {
+                                    row+=`<div class="mess__item" id="item"> <div class="image img-cir img-40">
+                                                    <img src="${product.image}" alt="Michelle Moreno" />
+                                                </div>
+                                                <div class="content">
+                                               <h6>le produit ${product.nom} a atteint l'alerte stock</h6>
+                                                </div></div>`
+                                    });
+
+                                    document.getElementById("message").innerHTML=row;
+                                  document.getElementById("quantity").innerHTML=stockData.length;
+                                  document.getElementById("title").innerHTML=`vous avez ${stockData.length} messages`;
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                  }
+
+                                 
+                                }
+                            
+                                // Rafraîchir le tableau toutes les 5 secondes
+                                setInterval(fetchStockData, 5000);
+                                window.onload = fetchStockData;
+                              </script>
+
+
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->

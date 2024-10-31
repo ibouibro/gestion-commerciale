@@ -1,0 +1,132 @@
+
+
+
+
+
+
+
+<%- include('header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+   
+</div>
+<%  if (locals?.annulations && locals?.annulations.length != 0) { %>
+  Id Client :  <%= annulations[0].id_client %> , <%= annulations[0].prenom %>  <%= annulations[0].nom %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id Annulation</th>
+                    <th>Date</th>
+                    <th>Facture</th>
+                    
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< annulations.length; i++) { %>
+                <tr>
+                    <td><%= annulations[i].id %></td>
+                    <td><%= annulations[i].date %></td>
+                    <td><%= annulations[i].id_facture %></td>
+                   
+                   
+                    <td>
+                      <%
+                     let target = "#largeModal"+annulations[i].id;
+                     let targetx = "#largeModalx"+annulations[i].id;
+                     let del = "del"+annulations[i].id;
+                     let delx = "del"+annulations[i].id+"x"; %>
+                      <div class="table-data-feature">
+                          <button class="item"  data-toggle="modal" data-target="<%= targetx %>" data-placement="top" title="afficher">
+                              <i class="fa fa-eye"></i>
+                          </button>
+                          
+                         
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucune annulation trouvée
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+
+
+<% for (var i=0; i< annulations.length; i++){
+  
+  let target = "largeModalx"+annulations[i].id; 
+  let label = "largeModalLabelx"+annulations[i].id;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">informations Annulation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      
+
+      <div class="modal-body">
+        <p>
+<p><b>Id : </b>  <%= annulations[i].id %></p>
+<p><b>date : </b>  <%= annulations[i].nom %></p>
+<p><b>facture : </b>  <%= annulations[i].tel %></p>
+<p><b>produits annulés : </b>  </p>
+
+<% for (var j=0; j< ap.length; j++){
+if(ap[j].id_annulation==annulations[i].id){
+  %>
+ <div style="border:1px solid gray;"></div>
+ <p><b>produit :</b> <%= ap[j].nom %> </p>
+ <p><b>quantité annulée :</b> <%= ap[j].quantite %> </p>
+  <% }} %>
+
+  
+           </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">fermer</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+
+
+<!-- end modal large -->
+<%- include('footer') -%>

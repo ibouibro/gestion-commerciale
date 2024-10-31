@@ -1,0 +1,113 @@
+
+
+
+
+
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  <form accept-charset="UTF-8" role="form"  method="post" action="/afficher_inventaire">
+    choisir un intervalle de date :
+    <div class="form-horizontal" style="display:flex; justify-content:space-between;">
+        
+        <div>
+           
+            <input type="date" placeholder="date début" class="form-control" style="width:200px;" name="debut">
+        </div>
+
+              <div>
+                
+                <input type="date" placeholder="date fin" class="form-control" style="width:200px;" name="fin">
+              </div>
+                
+
+        <input class="btn  btn-success "  type="submit" value="afficher">
+      </div>
+      </form>
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+   
+</div>
+
+<% 
+    if ((locals?.produits && locals?.produits.length != 0) ) { 
+       %>
+       Date : entre <%= debut %>   et   <%= fin %>
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning">
+          <thead>
+            <tr>
+              
+              <th>produit</th>
+              <th>entrées</th>
+              <th>sorties</th>
+             
+             
+             
+            </tr>
+          </thead>
+          <tbody>
+            <%  for(var i=0; i< produits.length; i++) {
+              let e=0; let s =0;
+              for(var j=0; j< entree.length; j++) {
+                if(produits[i].id_produit == entree[j].id_produit){ e = e+ entree[j].c;  %>
+                         
+                         <% }  }
+                         for(var j=0; j< sortie.length; j++) {
+                          if(produits[i].id_produit == sortie[j].id_produit){  s = s+ sortie[j].c;  %>
+                                  
+                                   <% } }
+                                  
+
+                         %>
+            <tr>
+              
+              <td> <%= produits[i].nom %> </td>
+            <td> <%= e %> </td>
+            <td> <%= s %></td>
+           
+            </tr>
+            <% }  %>
+    
+           
+
+              
+    
+              
+    
+                
+                   
+                  </tr
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+        <% }else{  %>
+          
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>

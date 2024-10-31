@@ -1,0 +1,72 @@
+
+
+
+
+
+
+<%- include('header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+    
+</div>
+<%  if (locals?.remb && locals?.remb.length != 0) { %>
+  Id Client :  <%= remb[0].id_client %> , <%= remb[0].prenom %>  <%= remb[0].nom %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id Remboursement</th>
+                    <th>Date</th>
+                    <th>Facture</th>
+                    <th>montant remboursé</th>
+                   
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< remb.length; i++) { %>
+                <tr>
+                    <td><%= remb[i].id %></td>
+                    <td><%= remb[i].date %></td>
+                    <td><%= remb[i].id_facture %></td>
+                    <td><%= remb[i].montant %></td>
+                   
+                   
+                </tr>
+                <% }  %>
+               
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucune remboursement trouvé
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+
+
+
+
+
+<!-- end modal large -->
+<%- include('footer') -%>

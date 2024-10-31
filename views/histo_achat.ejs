@@ -1,0 +1,155 @@
+
+
+
+
+
+
+
+<%- include('header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+   
+</div>
+<%  if (locals?.achat && locals?.achat.length != 0) { 
+  %>
+
+  Id Client :  <%= achat[0].id_client %>, <%= achat[0].prenom %> <%= achat[0].nom %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+          <thead>
+            <tr>
+              <th>id Achat</th>
+              <th>DATE Achat</th>
+              <th>Actions</th>
+            
+            
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i< achat.length; i++) {  %>
+            <tr>
+              <td> <%= achat[i].id %> </td>
+              <td> <%= achat[i].date %> </td>
+              
+                    <td>
+                      <%
+                     let target = "#largeModal"+achat[i].id;
+                     let targetx = "#largeModalx"+achat[i].id;
+                     let del = "del"+achat[i].id;
+                     let delx = "del"+achat[i].id+"x";
+                     let dlink = "/one_facture/?id="+achat[i].id; %>
+                      <div class="table-data-feature">
+                          <a href="<%= dlink %>" class="item"  data-toggle="tooltip"  data-placement="top" title="afficher">
+                              <i class="fa fa-eye"></i>
+                          </a>
+                          <button class="au-btn au-btn-icon au-btn--green au-btn--small" style="height:30px;" data-toggle="modal" data-target="<%= target %>">
+                            </i>paiements</button>
+                         
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               
+            </tbody>
+        </table>
+        <% }else{  %>
+        
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+<% for(var i=0; i<achat.length;i++){
+  let target = "largeModal"+achat[i].id;
+  let label = "largeModalLabel"+achat[i].id;
+  
+  %>
+
+<div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="<%= label %>">paiements de l'achat #<%= achat[i].id %>, <%= achat[i].prenom %> <%= achat[i].nom %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          
+        
+      <%  if (locals?.paiements && locals?.paiements.length != 0) { %>
+        <div class="table-responsive table-responsive-data2">
+          
+            <table class="table table-borderless table-striped table-earning">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Date</th>
+                        <th>montant</th>
+                        
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                  <%   var k =0;
+            for(var j=0; j< paiements.length; j++) {
+              if(paiements[j].id_facture == achat[i].id){
+                k=k+1;
+                 %>
+                    <tr>
+                        <td><%= paiements[j].id %></td>
+                        <td><%= paiements[j].date %></td>
+                        <td><%= paiements[j].montant %></td>
+                       
+                    </tr>
+                    <% }}  %>
+                  
+                </tbody>
+            </table>
+          </div>
+            <% }else{  %>
+              Aucun paiement trouvé
+              <% }
+              
+              if(k==0) { %>
+
+                Aucun paiement trouvé
+                <% } %>
+        
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<% }
+  %>
+
+
+
+<!-- end modal large -->
+<%- include('footer') -%>

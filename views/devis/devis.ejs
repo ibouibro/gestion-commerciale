@@ -1,0 +1,358 @@
+
+
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+    <a href="/ajouter_devis_form" class="au-btn au-btn-icon au-btn--green au-btn--small" >
+        <i class="zmdi zmdi-plus"></i>créer devis</a>
+   
+</div>
+<%  if (locals?.devis && locals?.devis.length != 0) { %>
+  <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    
+                    <th>Id Client</th>
+                    <th>Client</th>
+                    
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< devis.length; i++) { %>
+                <tr>
+                    <td><%= devis[i].id %></td>
+                   
+                    <td><%= devis[i].id_client %></td>
+                    <td><%= devis[i].prenom %> <%= devis[i].nom %> </td>
+                   
+                    <td>
+                     <% let dlink3 = '/supprimer_devis/?id='+devis[i].id;
+                     let dlink2 = '/one_devis/?id='+devis[i].id;
+                     let dlink1 = '/modifier_devis_form/?id='+devis[i].id;
+                     let target = "#largeModal"+devis[i].id;
+                     let targetx = "#largeModalx"+devis[i].id;
+                     let del = "del"+devis[i].id;
+                     let delx = "del"+devis[i].id+"x"; %>
+                      <div class="table-data-feature">
+                          <a href="<%= dlink2 %>" class="item"   data-placement="top" title="afficher">
+                              <i class="fa fa-eye"></i>
+                          </a>
+                          <a href="<%= dlink1 %>" class="item"  data-placement="top" title="Modifier" >
+                              <i class="zmdi zmdi-edit"></i>
+                          </a>
+                          <button  onclick="sup('<%= del %>')" class="item" data-toggle="tooltip" data-placement="top" title="supprimer">
+                              <i class="zmdi zmdi-delete"></i>
+                          </button>
+                          <a href="<%= dlink3 %>" id="<%= delx %>"></a>
+                          
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               <script>
+
+                function sup(x)
+                {
+                  if(confirm("vous risquez de supprimer les factures liés à ce devis, souhaitez vous continuer ?")==true)
+                {
+                  var s = x+"x";
+                  document.getElementById(s).click();
+                }
+                }
+               </script>
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucun devis trouvé
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+<% for (var i=0; i< devis.length; i++){
+  
+  let target = "largeModal"+devis[i].id; 
+  let label = "largeModalLabel"+devis[i].id;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">Modifier Devis</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <form action="/modifier_devis" method="post">
+
+      <div class="modal-body">
+        <p>
+<input type="hidden" name="id" value="<%= devis[i].id %>">
+
+<div class="form-group">
+
+  Client
+  <select class="form-control" style="width:200px;"  class="col-md-6" required  name="id_client">
+    
+    <option value='<%= devis[i].id_client %> '><%= devis[i].id_client+". " %><%= devis[i].prenom %> <%= devis[i].nom %> </option>
+    <%  
+     for(var j=0; j< clients.length; j++) {
+       if(devis[i].id_client != clients[j].id_client){
+       %>
+ <option value='<%= clients[j].id_client %> '><%= clients[j].id_client+". " %><%= clients[j].prenom %> <%= clients[j].nom %> </option>
+ 
+ <%  }} %>
+ </select> 
+
+</div>
+
+  <div class="card-body card-block">
+    <p>id devis : <%= devis[i].id %></p>
+    <% let gx = "g"+devis[i].id+"x";
+    let g = "g"+devis[i].id;  %>
+
+
+
+
+<div id="<%= gx %>">
+<%  
+var p=1;
+    for(var k=0; k< pd.length; k++) {
+      if(devis[i].id == pd[k].id_devis){
+        let sup1 = "sup1"+pd[k].id_produit+"x"+pd[k].quantite+"x"+devis[i].id;
+      %>
+  <div  id="<%= sup1 %>">
+    <div class="card-body card-block">
+    
+      <div class="row form-group">
+          <div class="col col-md-8">
+            <select class="form-control" style="width:200px;" required class="col-md-6"  name="produit[]">
+              <option value='<%= pd[k].nom %> '><%= pd[k].nom %> </option>
+                <%  
+                for(var j=0; j< produits.length; j++) {
+                  if(produits[j].id_produit != pd[k].id_produit){
+                  %>
+            <option value='<%= produits[j].nom %> '><%= produits[j].nom %> </option>
+            
+            <%  }} %>
+            </select>
+          </div>
+          <div class="col col-md-4">
+            
+            <% let sup = "sup"+pd[k].id_produit+"x"+pd[k].quantite+"x"+devis[i].id; %>
+       Quantité <input type="number" style="border:1px solid gray;" placeholder="quantité" class="col-md-8" name="quantite[]" required min="0" value="<%= pd[k].quantite %>"  class="form-control"> 
+       <% if(p != 1){ %>
+        <button  onclick="del(event)" id="<%= sup %>"  class="item" data-toggle="tooltip" data-placement="top" title="supprimer"> <i class="zmdi zmdi-delete"></i></button>
+        <% }
+        p=p+1; %>
+          </div>
+      </div> 
+ </div>
+
+
+
+
+
+  </div>
+
+  
+  
+  
+
+  <script>
+    function del(event)
+    {
+      event.target.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode.parentNode.parentNode);   }
+function ajout(event)
+{
+  let my_elem = event.target.parentNode.parentNode.parentNode;
+  let span=' <div  id="sg"><div class="card-body card-block"><div class="row form-group"><div class="col col-md-8"><select class="form-control" style="width:200px;"  class="col-md-6" required  name="produit[]"><%   for(var j=0; j< produits.length; j++) { %> <option value="<%= produits[j].nom %> ""><%= produits[j].nom %> </option> <%  } %>  </select>   </div>  <div class="col col-md-4"> Quantité <input type="number" style="border:1px solid gray;" class="col-md-8" placeholder="quantité" name="quantite[]" required min="0"  class="form-control">   <button  onclick="del1(event)" type="button"  class="item" data-toggle="tooltip" data-placement="top" title="supprimer">  <i class="zmdi zmdi-delete"></i>  </button>  </div>  </div>  </div>';
+
+  event.target.parentNode.parentNode.parentNode.parentNode.parentNode.innerHTML+=span;
+}
+  </script>
+  <%  
+}
+}     
+          %>
+
+
+              
+
+</div>
+
+
+<div class="card-body card-block">
+    
+  <div class="row form-group">
+      <div class="col col-md-10">
+        
+      </div>
+      <div class="col col-md-4">
+        <button type="button" onclick="ajout(event)"  class="item" data-toggle="tooltip" data-placement="top" title="ajouter">
+          <i class="fas fa-plus-square"></i>
+        </button>
+      </div>
+  </div> 
+</div> 
+
+
+</div>
+
+
+
+
+
+
+
+           </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Créer un devis</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="/ajouter_devis" method="post">
+
+    <div class="modal-body">
+
+<div class="card-body card-block">
+  <div class="form-group">
+    Date
+    <input type="date" required name="date" class="form-control">
+    </div>
+  <div class="form-group">
+
+    Client
+    <select class="form-control" style="width:200px;"  class="col-md-6" required  name="id_client">
+      <%  
+       for(var j=0; j< clients.length; j++) {
+         
+         %>
+   <option value='<%= clients[j].id_client %> '><%= clients[j].id_client+". " %><%= clients[j].prenom %> <%= clients[j].nom %> </option>
+   
+   <%  } %>
+   </select> 
+
+  </div>
+<div id="group">
+  <div  id="sg">
+    <div class="card-body card-block">
+    
+      <div class="row form-group">
+          <div class="col col-md-8">
+            Produit
+            <select class="form-control" style="width:200px;"  class="col-md-6" required  name="produit[]">
+              <%  
+               for(var j=0; j< produits.length; j++) {
+                 
+                 %>
+           <option value='<%= produits[j].nom %> '><%= produits[j].nom %> </option>
+           
+           <%  } %>
+           </select> 
+          </div>
+          <div class="col col-md-4">
+            
+          Quantité  <input type="number" class="col-md-8" style="border:1px solid gray;" placeholder="quantité" name="quantite[]" required min="0"  class="form-control">
+             
+          </div>
+      </div> 
+ </div>
+  </div>
+
+  
+
+
+
+
+
+
+</div>
+<div class="card-body card-block">
+    
+  <div class="row form-group">
+      <div class="col col-md-10">
+        
+      </div>
+      <div class="col col-md-4">
+        <button type="button" onclick="ajout1(event)"   class="item" data-toggle="tooltip" data-placement="top" title="ajouter">
+          <i class="fas fa-plus-square"></i>
+        </button>
+      </div>
+  </div> 
+</div>
+  <script>
+    function del1(event)
+    {
+event.target.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode.parentNode.parentNode);
+    }
+function ajout1(event)
+{
+var a = document.getElementById("group").innerHTML;
+document.getElementById("group").innerHTML= a+' <div  id="sg"><div class="card-body card-block"><div class="row form-group"><div class="col col-md-8"><select class="form-control" style="width:200px;"  class="col-md-6" required  name="produit[]"><%   for(var j=0; j< produits.length; j++) { %> <option value="<%= produits[j].nom %> ""><%= produits[j].nom %> </option> <%  } %>  </select>   </div>  <div class="col col-md-4"> Quantité <input type="number" style="border:1px solid gray;" class="col-md-8" placeholder="quantité" name="quantite[]" required min="0"  class="form-control">   <button  onclick="del1(event)" type="button"  class="item" data-toggle="tooltip" data-placement="top" title="supprimer">  <i class="zmdi zmdi-delete"></i>  </button>  </div>  </div>  </div>';
+}
+  </script>
+
+</div>
+
+
+
+         </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>

@@ -1,0 +1,277 @@
+
+<%- include('../header') -%>
+<div class="main-content" >
+<div class="container" style="background:white;">
+  
+    <div class="print-button">
+        <button id="imp" onclick="imprimer()">Imprimer</button>
+    </div>
+<div id="devis" style="background:white;">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0; 
+            padding: 0;
+            background-color: white;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h2, h4, h5, h6 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .header, .footer {
+            background-color: #ffffff;
+            color: #111010;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .header img {
+            max-width: 120px;
+            margin-bottom: 10px;
+        }
+        .client-info, .total-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .client-info div, .total-section div {
+            width: 48%;
+        }
+        .items {
+            margin-top: 30px;
+        }
+        .items table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .items table, .items th, .items td {
+            border: 1px solid #ddd;
+        }
+        .items th, .items td {
+            padding: 12px;
+            text-align: left;
+        }
+        .items th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .total-section div {
+            text-align: right;
+        }
+        .footer {
+            background-color: #ffffff;
+            color: #0c0c0c;
+            text-align: center;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+        }
+        .footer p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #333;
+        }
+        .print-button {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .print-button button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .print-button button:hover {
+            background-color: #0056b3;
+        }
+        .order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-table th, .order-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table th {
+    background-color: #f7f7f7;
+}
+
+.order-table tfoot td {
+    font-size: 1.2em;
+}
+
+.text-right {
+    text-align: right;
+}
+
+tfoot td {
+    background-color: #f4f4f4;
+    padding: 15px 10px;
+    border-top: 2px solid #e74c3c;
+}
+
+    </style>
+    <!-- En-tête de la facture avec logo -->
+    <div class="header">
+        <img src="/logo.png" alt="Logo de l'entreprise">
+        <h2>NETSYSTEME</h2>
+        <p>spécialisée dans les domaines des systèmes d'information, du développement informatique, des réseaux et des télécommunications. Géolocalisation, électronique et domotique, systèmes solaires, vidéo surveillance </p>
+    </div>
+<div class="container">
+    <!-- Informations de la facture -->
+    <div class="client-info">
+        <div>
+            <h5>CLIENT :</h5>
+            <p><strong><%= facture.prenom %> <%= facture.nom %></strong><br>
+              
+        </div>
+        <div style="text-align: right;">
+            <h5>FACTURE :</h5>
+            <p><strong>Date :</strong> <%= facture.date %></p>
+            <p><strong>Numéro de facture :</strong> <%= facture.id %></p>
+        </div>
+    </div>
+
+    <!-- Tableau des articles facturés -->
+    <div class="items">
+        <table>
+            <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Prix unitaire</th>
+                <th>Quantité</th>
+                
+                <th>Montant (HT)</th>
+            </tr>
+            </thead>
+            <tbody>
+              <%
+              var totaltax = 0;
+              var montanttc =0;
+              var totalremise = 0;
+              var montantHTtotal = 0;
+              for (var i=0; i < produits.length;i++){
+                var montantHT = (produits[i].prix -produits[i].remise)*produits[i].quantite;
+                 totalremise = totalremise + produits[i].remise*produits[i].quantite;
+                 totaltax = totaltax + produits[i].val_tax*produits[i].quantite;
+                 montanttc = montanttc + montantHT + produits[i].val_tax*produits[i].quantite;
+                montantHTtotal = montantHTtotal + montantHT; 
+                 %>
+            <tr>
+                <td> <%= produits[i].nom %></td>
+                <td> <%= new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', minimumFractionDigits: 2 }).format(produits[i].prix.toFixed(2)) %> </td>
+                <td><%= produits[i].quantite %></td>
+                
+                <td><%= new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', minimumFractionDigits: 2 }).format(montantHT.toFixed(2)) %></td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Totaux -->
+    <div class="total-section">
+        <div></div>
+        <div>
+
+            <table class="order-table"><thead><th><strong>Total HT :</strong></th>
+            <th><span class="highlight"><%= new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', minimumFractionDigits: 2 }).format(montantHTtotal.toFixed(2)) %></span></th></thead>
+           <tbody><tr><td><strong>Remise :</strong></td>
+          <td><span class="highlight"></span><%= facture.remise %> %</td></tr>
+          <% if(facture.tva == 18){ %>
+<tr><td><strong>TVA (18%) :</strong></td><td><span class="highlight"></span><%= new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', minimumFractionDigits: 2 }).format(totaltax.toFixed(2)) %></td></tr>
+            <% } %>
+            <tr><td><strong>Total TTC :</strong></td><td><span class="highlight"><%= new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', minimumFractionDigits: 2 }).format(montanttc.toFixed(2)) %></span></td></tr></tbody>
+        </table>
+
+              </div>
+    </div>
+
+    
+</div>
+    <!-- Pied de page avec logo -->
+    <div class="footer" style="margin-top:20px;">
+        <div style="border : 1px solid gray;"></div>
+        <p> Whatsapp: 77 846 16 55 / Bureau: 33 883 42 42 - 33 827 28 45 
+          </p>
+        <p> Ouest foire sur la route de l'aeroport Leopold Sedar Senghor immeuble Seigneurie</p>
+        <p> R.C.SN/DKR-2010.A.7987//NINEA: 004225464 // Siteweb: https://netsys-info.com//</p>
+    </div>
+</div>
+</div>
+
+<script>
+  function imprimer()
+  {
+    let s= `<style>@media print {
+            body {
+                margin: 0;
+            }
+
+            .header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background-color: #fff;
+            }
+
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                background-color: #fff;
+            }
+
+            .container {
+                page-break-after: avoid;
+                padding-top: 320px; /* espace pour l'entête fixe */
+                padding-bottom: 150px; /* espace pour le pied de page */
+            }
+        }</style>`;
+    document.getElementById("imp").style.display="none";
+    var myWindow = window.open('', 'facture', 'height=700,width=600');
+            myWindow.document.write('<html><head><title>facture</title>');
+            /*optional stylesheet*/ //myWindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+           
+            myWindow.document.write('</head><body >');
+            myWindow.document.write(document.getElementById("devis").innerHTML);
+            myWindow.document.write(s);
+            myWindow.document.write('</body></html>');
+            myWindow.document.close(); // necessary for IE >= 10
+
+            myWindow.onload=function(){ // necessary if the div contain images
+
+                myWindow.focus(); // necessary for IE >= 10
+                myWindow.print();
+                document.getElementById("imp").style.display="inline-block";
+            };
+    
+  }
+</script>
+</div>
+<%- include('../footer') -%>

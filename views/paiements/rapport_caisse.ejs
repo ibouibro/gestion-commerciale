@@ -1,0 +1,161 @@
+
+
+
+
+
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  <form accept-charset="UTF-8" role="form"  method="post" action="/afficher_rapport">
+    choisir un intervalle de date :
+    <div class="form-horizontal" style="display:flex; justify-content:space-between;">
+        
+        <div>
+           
+            <input type="date" placeholder="date début" class="form-control" style="width:200px;" name="debut">
+        </div>
+
+              <div>
+                
+                <input type="date" placeholder="date fin" class="form-control" style="width:200px;" name="fin">
+              </div>
+                
+
+        <input class="btn  btn-success "  type="submit" value="afficher">
+      </div>
+      </form>
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+   
+</div>
+
+<% var entrees =0;
+    var sorties =0;
+    var soldes =0;
+    if ((locals?.commandes && locals?.commandes.length != 0) || (locals?.ventes && locals?.ventes.length != 0) || (locals?.acomptes && locals?.acomptes.length != 0)) { 
+       %>
+       Date : entre <%= debut %>   et   <%= fin %>
+    <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning">
+          <thead>
+            <tr>
+              <th>Fait par</th>
+              <th>Action</th>
+              <th>entrées</th>
+              <th>sorties</th>
+              <th>Solde</th>
+           
+             
+             
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i< depenses.length; i++) {  %>
+              <tr>
+                <td> entreprise  </td>
+                <td> dépenses </td>
+              <td> 0 </td>
+              <td> <% if(depenses[i].sortie == 0 || depenses[i].sortie== null ){ %>
+                0 <% } else{ %>  <%= depenses[i].sortie %> <% } %> </td>
+              <td> <% if(depenses[i].sortie == 0 || depenses[i].sortie== null ){ %>
+                0 <% } else{ %> - <%= depenses[i].sortie %> <% } %></td>
+              <% sorties = sorties + depenses[i].sortie  %>
+            
+               
+              </tr>
+              <% }  %>
+            <% for(var i=0; i< commandes.length; i++) {  %>
+            <tr>
+              <td> entreprise  </td>
+              <td> commande </td>
+            <td> 0 </td>
+            <td> <% if(commandes[i].sortie == 0 || commandes[i].sortie== null ){ %>
+              0 <% } else{ %>  <%= commandes[i].sortie %> <% } %> </td>
+            <td> <% if(commandes[i].sortie == 0 || commandes[i].sortie== null ){ %>
+              0 <% } else{ %> - <%= commandes[i].sortie %> <% } %></td>
+            <% sorties = sorties + commandes[i].sortie  %>
+          
+             
+            </tr>
+            <% }  %>
+    
+            <% for(var i=0; i< ventes.length; i++) {  %>
+              <tr>
+                <td>  <%= ventes[i].prenom %> <%= ventes[i].nom %> </td>
+                <td> versement </td>
+              <td> <% if(ventes[i].entree == 0 || ventes[i].entree== null ){ %>
+                0 <% } else{ %>  <%= ventes[i].entree %> <% } %> </td>
+              <td> 0 </td>
+              <td>  <% if(ventes[i].entree == 0 || ventes[i].entree== null ){ %>
+                0 <% } else{ %>  <%= ventes[i].entree %> <% } %></td>
+             
+              <% entrees = entrees + ventes[i].entree  %>
+          
+               
+              </tr>
+              <% }  %>
+              <% for(var i=0; i< acomptes.length; i++) { 
+                if(!(acomptes[i].entree == 0 || acomptes[i].entree== null) ){  %>
+                <tr>
+                  <td>  <%= acomptes[i].prenom %> <%= acomptes[i].nom %> </td>
+                  <td> acompte </td>
+                <td> <% if(acomptes[i].entree == 0 || acomptes[i].entree== null ){ %>
+                  0 <% } else{ %>  <%= acomptes[i].entree %> <% } %> </td>
+                <td> 0 </td>
+                <td>  <% if(acomptes[i].entree == 0 || acomptes[i].entree== null ){ %>
+                  0 <% } else{ %>  <%= acomptes[i].entree %> <% } %></td>
+               
+                <% entrees = entrees + acomptes[i].entree  %>
+            
+                 
+                </tr>
+
+              <% } } %>
+    
+              
+    
+                
+                  <% soldes = entrees - sorties  %>
+                  <tr>
+                    <td>  </td>
+                    <td> Total </td>
+                  <td> <%= entrees %> </td>
+                  <td> <%= sorties %> </td>
+                  <td>  <%= soldes %></td>
+                 
+                
+                   
+                  </tr
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+        <% }else{  %>
+          
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>

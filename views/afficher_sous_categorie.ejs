@@ -1,0 +1,55 @@
+<%- include('header') -%>
+
+
+<div class="container mt-4">
+    <h1>Sous catégories</h1>
+    <%  if (locals?.message) {  %>
+      <div class="alert alert-success" role="alert">
+        <%= message %>  
+      </div>           
+       
+  <% } 
+  if (locals?.categories && locals?.categories.length != 0) { 
+
+  %>
+
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Nom</th>
+          <th>catégorie</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <%  
+        for(var i=0; i< categories.length; i++) { %>
+        <tr>
+          <td> <%= categories[i].id %> </td>
+          <td> <%= categories[i].sc_nom %> </td>
+          <td> <%= categories[i].nom_c %> </td>
+        
+        
+      
+          <td class="table-actions">
+            <%   let dlink = '/supprimer_sous_categorie/?id='+categories[i].id;
+            let dlink2 = '/modifier_sous_categorie_form/?id='+categories[i].id;
+            %>
+           
+            <a href="<%= dlink2 %>" class="btn btn-warning btn-sm">Edit</a>
+            <a href="<%= dlink %>" class="btn btn-danger btn-sm">Delete</a>
+          </td>
+        </tr
+        <% }  %>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+    <% }else{ %>
+      Il n'y a pas encore de sous catégories
+      <% } %>
+  </div>
+ 
+
+<%- include('footer') -%>

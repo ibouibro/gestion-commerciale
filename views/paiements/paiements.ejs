@@ -1,0 +1,463 @@
+
+
+
+
+<%- include('../header') -%>
+
+<div class="main-content">
+  <div class="col-lg-9">
+   
+    <%  if (locals?.message) {  %>
+ 
+        
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    
+  <% } %>
+
+  
+
+  <div class="table-data__tool-right" style="margin-bottom:15px;">
+    <div class="form-h"><button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
+      <i class="zmdi zmdi-plus"></i>ajouter paiement</button>
+      <%  if (locals?.paiements && locals?.paiements.length != 0) { %>
+      <input type="text" id="searchInput" class="form-control" style="width:300px;margin-left:8px;" placeholder="Search ...">
+      <% } %>
+ </div>
+    
+</div>
+<%  if (locals?.paiements && locals?.paiements.length != 0) { %>
+   <div class="table-responsive table-responsive-data2" style="width:100%;">
+      
+        <table class="table table-borderless table-striped table-earning" id="clientTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>facture</th>
+                    <th>Montant</th>
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              <%   
+        for(var i=0; i< paiements.length; i++) { %>
+                <tr>
+                    <td><%= paiements[i].id %></td>
+                    <td><%= paiements[i].date %></td>
+                    <td><%= paiements[i].prenom %> <%= paiements[i].nom %></td>
+                    <td><%= paiements[i].id_facture %></td>
+                    <td><%= paiements[i].montant %></td>
+                    <td>
+                     <% let dlink3 = '/supprimer_paiement/?id='+paiements[i].id;
+                     let target = "#largeModal"+paiements[i].id;
+                     let targetx = "#largeModalx"+paiements[i].id;
+                     let del = "del"+paiements[i].id;
+                     let delx = "del"+paiements[i].id+"x"; %>
+                      <div class="table-data-feature">
+                         
+                          <button class="item"  data-placement="top" title="Modifier" data-toggle="modal" data-target="<%= target %>">
+                              <i class="zmdi zmdi-edit"></i>
+                          </button>
+                         
+                      </div>
+                  </td>
+                </tr>
+                <% }  %>
+               <script>
+
+                function sup(x)
+                {
+                  if(confirm("vous risquez de supprimer les produits liés à ce fournisseur, souhaitez vous continuer ?")==true)
+                {
+                  var s = x+"x";
+                  document.getElementById(s).click();
+                }
+                }
+               </script>
+            </tbody>
+        </table>
+        <% }else{  %>
+          Aucun paiement trouvé
+          <% } %>
+    </div>
+</div>
+</div>
+
+<!-- modal large -->
+
+<% for (var i=0; i< paiements.length; i++){
+  
+  let target = "largeModal"+paiements[i].id; 
+  let label = "largeModalLabel"+paiements[i].id;
+
+  %>
+
+  <div class="modal fade" id="<%= target %>" tabindex="-1" role="dialog" aria-labelledby="<%= label %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="<%= label %>">Modifier Paiement</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <form action="/modifier_paiement" method="post">
+
+      <div class="modal-body">
+        <p>
+<input type="hidden" id="mont" name="id" value="<%= paiements[i].id %>">
+  <div class="card-body card-block">
+    <% let val = 0;
+    let tt = 0;
+    let reste = 0;
+    for(var j=0;j < paiements.length;j++)
+    {
+        if(paiements[i].id_facture == paiements[j].id_facture)
+        {
+        val = val + paiements[j].montant; }
+    }
+
+    for(var j=0;j < acomptes.length;j++)
+    {
+        if(paiements[i].id_facture == acomptes[j].id)
+        {
+        val = val + acomptes[j].acompte; }
+    }
+    for(var j=0;j < ttc.length; j++)
+    {
+        if(paiements[i].id_facture == ttc[j].id)
+        {
+        tt= tt + ttc[j].ttc -val; }
+    }
+
+  reste =tt;
+   
+    %>
+<script>
+    function change(event)
+    {
+       let x= event.target.parentNode.parentNode;
+       let v = parseInt(x.children[0].innerHTML)+parseInt(x.children[1].innerHTML)-parseInt(event.target.value);
+           x.children[3].children[1].value = v ;
+
+    }
+</script>
+    
+    <div>
+        <div style="display:none;"><%= reste %></div>
+        <div style="display:none;"><%= paiements[i].montant %></div>
+    <div class="form-group">
+        <label for="nom" class=" form-control-label">Montant</label>
+        <input type="number" min="0" oninput="change(event)" required id="vat" value="<%= paiements[i].montant %>" name="montant" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="nom" class=" form-control-label">reste à payer</label>
+        <input type="number" min="0" required id="vat" value="<%= reste %>" class="form-control">
+    </div>
+</div>
+    <div class="form-group">
+       Facture : <%= paiements[i].id %>  <%= paiements[i].prenom %> <%= paiements[i].nom %>
+    </div>
+
+    
+
+</div>
+
+
+
+           </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %>
+
+
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Créer un paiement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="/ajouter_paiement" method="post">
+
+    <div class="modal-body">
+
+<div class="card-body card-block">
+  <div id="error"></div>
+  <div class="form-group">
+      <label for="nom" class=" form-control-label">Date</label>
+      <input type="date" required id="vat"  name="date" class="form-control">
+  </div>
+  <div>
+  <div class="form-group">
+    <label for="tel" class=" form-control-label">Facture</label>
+    <select name="id_facture" required id="fac" onchange="f(event)">
+      <option value="">choisir une facture</option>
+      <% for (var i=0; i< factures.length; i++){
+          %>
+<option value="<%= factures[i].id %>"><%=factures[i].id+". " %><%= factures[i].prenom %> <%= factures[i].nom %></option>
+          <%
+                      }                %>
+    </select>
+</div>
+
+  <div class="form-group">
+      <label for="adresse" class=" form-control-label">Montant</label>
+      <input type="number" oninput="change1(event)" required id="street" name="montant" id="montant" class="form-control">
+  </div>
+
+
+  
+  <div class="form-group">
+    <label for="adresse" class=" form-control-label">reste à payer</label>
+    <input type="number"  id="mnt" name="montant" id="montant" class="form-control">
+</div>
+</div>
+
+  
+ 
+
+</div>
+
+
+
+         </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit"  class="btn btn-primary">Enregistrer</button>
+    <button type="submit" style="display:none;" id="sub" ></button>
+    </form>
+    
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+async function f(event) {
+                                  try {
+                                    const response = await fetch('/api/reste');
+                                    const x = await response.json();
+                                    
+                                 
+                                  
+                                    
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    
+                                    let val =0;
+                                    
+                                    x.forEach(product => {
+                                      
+                                    if(product.id == event.target.value)
+                                    {
+                                        
+                                      val = val+ product.ttc;
+                                    }
+                                    });
+
+                                    try {
+                                    const response = await fetch('/api/acompte');
+                                    const z = await response.json();
+                                    
+                                 
+                                  
+                                    
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    
+                                   
+                                    z.forEach(product => {
+                                      
+                                    if(product.id == event.target.value)
+                                    {
+                                        
+                                      val = val- product.acompte;
+                                    }
+                                    });
+
+
+
+                                    
+
+                                    try {
+                                    const response = await fetch('/api/reste');
+                                    const t = await response.json();
+                                    
+                                 
+                                  
+                                    
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    
+                                     t.forEach(product => {
+                                      
+                                    if(product.id_facture == event.target.value)
+                                    {
+                                        
+                                      val = val- product.s;
+                                    }
+                                    });
+
+
+                                  
+                                    
+
+                                  event.target.parentNode.parentNode.children[2].children[1].value=val;
+                                  target.parentNode.parentNode.children[1].children[1].value="0"
+
+                                
+
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+                                
+
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+
+
+
+                                  
+
+                                
+
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+                                  
+                                }
+
+
+                                async function change1(event) {
+                                    try {
+                                    const response = await fetch('/api/reste');
+                                    const x = await response.json();
+                                    
+                                 
+                                  
+                                    
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    
+                                    let val =0;
+                                    let y = event.target.parentNode.parentNode;
+                                    x.forEach(product => {
+                                      
+                                    if(product.id == y.children[0].children[1].value)
+                                    {
+                                        
+                                      val = val+ product.ttc;
+                                    }
+                                    });
+
+                                    try {
+                                    const response = await fetch('/api/acompte');
+                                    const z = await response.json();
+                                    
+                                 
+                                  
+                                    
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    
+                                   
+                                    z.forEach(product => {
+                                      
+                                    if(product.id == y.children[0].children[1].value)
+                                    {
+                                        
+                                      val = val- product.acompte;
+                                    }
+                                    });
+
+
+
+                                    
+
+                                    try {
+                                    const response = await fetch('/api/reste');
+                                    const t = await response.json();
+                                    
+                                 
+                                  
+                                    
+                                    // Boucle sur les produits avec des stocks inférieurs au seuil
+                                    
+                                     t.forEach(product => {
+                                      
+                                    if(product.id_facture == y.children[0].children[1].value)
+                                    {
+                                        
+                                      val = val- product.s;
+                                    }
+                                    });
+
+
+
+                                    
+
+                                   let v = val - event.target.value;
+                                   y.children[2].children[1].value=v;
+
+                               
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+                                
+
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+
+
+
+                                  
+
+                                
+
+                                    
+                                   // stockTable.innerHTML=all;
+                                  } catch (error) {
+                                    console.error('Erreur lors de la récupération des données de stock', error);
+                                    
+                                  }
+                                }
+
+
+
+</script>
+
+
+
+<!-- end modal large -->
+<%- include('../footer') -%>
