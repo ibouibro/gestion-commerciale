@@ -127,12 +127,23 @@ app.get("/clients",function(request,response)
                                        
                                     }else{
                                         console.log(resulta[0].c)
+
+                                        const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
+
                                         return response.render('clients', {
                                             nom: request.session.nom,
-                                            r_client: result,
+                                            r_client: paginatedData,
                                             nbre_achat: resulta,
                                             nbre_remb : resultr,
-                                            nbre_annulation: resultan
+                                            nbre_annulation: resultan,
+                                            currentPage : page,
+                                            totalPages
                                         })
                                     }
                                     
@@ -381,13 +392,22 @@ if(request.body.email==null)
                                            
                                         }else{
                                             console.log(resulta[0].c)
+                                            const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
                                             return response.render('clients', {
                                                 nom: request.session.nom,
-                                                r_client: result,
+                                                r_client: paginatedData,
                                                 nbre_achat: resulta,
                                                 nbre_remb : resultr,
                                                 nbre_annulation: resultan,
-                                                r_message : "le client a été modifié"
+                                                r_message : "le client a été modifié",
+                                                currentPage : page,
+                                                totalPages
                                             })
                                         }
                                         
@@ -547,13 +567,22 @@ app.get("/supprimer_client",function(request,response)
                                            
                                         }else{
                                             console.log(resulta[0].c)
+                                            const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
                                             return response.render('clients', {
                                                 nom: request.session.nom,
-                                                r_client: result,
+                                                r_client: paginatedData,
                                                 nbre_achat: resulta,
                                                 nbre_remb : resultr,
                                                 nbre_annulation: resultan,
-                                                r_message : "le client a été supprimé!"
+                                                r_message : "le client a été supprimé!",
+                                                currentPage : page,
+                                                totalPages
                                             })
                                         }
                                         
@@ -640,14 +669,22 @@ app.post("/ajouter_categorie",function(request,response)
                                         console.log(err)
                                         
                                     }else{
-                            
+                                        const page = parseInt(request.query.page) || 1;
+                                        const limit = 10; // Rows per page
+                                        const startIndex = (page - 1) * limit;
+                                        const endIndex = page * limit;
+                                    
+                                        const paginatedData = resultcat.slice(startIndex, endIndex);
+                                        const totalPages = Math.ceil(resultcat.length / limit);
                                         return response.render('categories/categories', {
                                             nom: request.session.nom,
                                             produit: result,
                                             fournisseurs : resultf,
                                            
-                                            categories : resultcat,
-                                            message : "la catégorie a été créée avec succès!"
+                                            categories : paginatedData,
+                                            message : "la catégorie a été créée avec succès!",
+                                            currentPage : page,
+                                            totalPages
                                             
                                         })
                                     }
@@ -704,14 +741,23 @@ app.post("/ajouter_sous_categorie",function(request,response)
                                             console.log(err)
                                             
                                         }else{
+                                            const page = parseInt(request.query.page) || 1;
+                                        const limit = 10; // Rows per page
+                                        const startIndex = (page - 1) * limit;
+                                        const endIndex = page * limit;
+                                    
+                                        const paginatedData = resultsc.slice(startIndex, endIndex);
+                                        const totalPages = Math.ceil(resultsc.length / limit);
                                 
                                             return response.render('sous_categories/sous_categories', {
                                                 nom: request.session.nom,
                                                 produit: result,
                                                 fournisseurs : resultf,
-                                                sous_categories : resultsc,
+                                                sous_categories : paginatedData,
                                                 categories : resultc,
-                                                message : "la sous catégorie a été créée avec succès!"
+                                                message : "la sous catégorie a été créée avec succès!",
+                                                currentPage : page,
+                                                totalPages
                                                 
                                             })
                                         }
@@ -781,12 +827,22 @@ app.get("/produits",function(request,response)
                             
                         }else{
                 
+                            const page = parseInt(request.query.page) || 1;
+                            const limit = 10; // Rows per page
+                            const startIndex = (page - 1) * limit;
+                            const endIndex = page * limit;
+                        
+                            const paginatedData = result.slice(startIndex, endIndex);
+                            const totalPages = Math.ceil(result.length / limit);
+                        
                             return response.render('produits', {
                                 nom: request.session.nom,
-                                produit: result,
+                                produit: paginatedData,
                                 fournisseurs : resultf,
                                 categories : resultc,
-                                cat : resultcat
+                                cat : resultcat,
+                                currentPage: page,
+                                totalPages
                                 
                             })
                         }
@@ -857,14 +913,22 @@ app.post("/ajouter_produit",function(request,response)
                                                             console.log(err)
                                                             
                                                         }else{
-                                                
+                                                            const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result1.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result1.length / limit);
                                                             return response.render('produits', {
                                                                 nom: request.session.nom,
-                                                                produit: result1,
+                                                                produit: paginatedData,
                                                                 fournisseurs : resultf1,
                                                                 categories : resultc1,
                                                                 cat : resultcat1,
-                                                                message : "le produit a été ajouté avec succès!"
+                                                                message : "le produit a été ajouté avec succès!",
+                                                                currentPage: page,
+                                                                totalPages
                                                                 
                                                             })
                                                         }
@@ -940,10 +1004,18 @@ app.get("/categories",function(request,response)
 
            
 
-
+            const page = parseInt(request.query.page) || 1;
+            const limit = 10; // Rows per page
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+        
+            const paginatedData = result.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(result.length / limit);
             response.render('categories/categories',{
                 nom: request.session.nom,
-                categories: result
+                categories: paginatedData,
+                currentPage : page,
+                totalPages
             })
         }
         
@@ -973,12 +1045,20 @@ app.get("/sous_categories",function(request,response)
         }else{
 
            
-
+            const page = parseInt(request.query.page) || 1;
+            const limit = 10; // Rows per page
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+        
+            const paginatedData = resultsc.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(resultsc.length / limit);
 
             response.render('sous_categories/sous_categories',{
                 nom: request.session.nom,
                 categories: resultc,
-                sous_categories : resultsc
+                sous_categories : paginatedData,
+                currentPage : page,
+                totalPages
             })
         }
         
@@ -1115,14 +1195,22 @@ app.get("/supprimer_sous_categorie",function(request,response)
                                             console.log(err)
                                             
                                         }else{
-                                
+                                            const page = parseInt(request.query.page) || 1;
+                                            const limit = 10; // Rows per page
+                                            const startIndex = (page - 1) * limit;
+                                            const endIndex = page * limit;
+                                        
+                                            const paginatedData = resultsc.slice(startIndex, endIndex);
+                                            const totalPages = Math.ceil(resultsc.length / limit);
                                             return response.render('sous_categories/sous_categories', {
                                                 nom: request.session.nom,
                                                 produit: result,
                                                 fournisseurs : resultf,
-                                                sous_categories : resultsc,
+                                                sous_categories : paginatedData,
                                                 categories : resultc,
-                                                message : "la sous catégorie a été supprimée avec succès!"
+                                                message : "la sous catégorie a été supprimée avec succès!",
+                                                currentPage : page,
+                                                totalPages
                                                 
                                             })
                                         }
@@ -1272,13 +1360,22 @@ app.get("/supprimer_categorie",function(request,response)
                                             console.log(err)
                                             
                                         }else{
-                                
+                                            const page = parseInt(request.query.page) || 1;
+                                            const limit = 10; // Rows per page
+                                            const startIndex = (page - 1) * limit;
+                                            const endIndex = page * limit;
+                                        
+                                            const paginatedData = resultcat.slice(startIndex, endIndex);
+                                            const totalPages = Math.ceil(resultcat.length / limit);
+
                                             return response.render('categories/categories', {
                                                 nom: request.session.nom,
                                                 produit: result,
                                                 fournisseurs : resultf,
-                                                categories : resultcat,
-                                                message : "la catégorie a été supprimée avec succès!"
+                                                categories : paginatedData,
+                                                message : "la catégorie a été supprimée avec succès!",
+                                                currentPage : page,
+                                                totalPages
                                                 
                                             })
                                         }
@@ -1352,13 +1449,23 @@ app.post("/modifier_produit",function(request,response)
                                                             
                                                         }else{
                                                 
+                                                            const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
                                                             return response.render('produits', {
                                                                 nom: request.session.nom,
-                                                                produit: result,
+                                                                produit: paginatedData,
                                                                 fournisseurs : resultf,
                                                                 categories : resultc,
                                                                 cat : resultcat,
-                                                                message : "le produit a été modifié avec succès!"
+                                                                message : "le produit a été modifié avec succès!",
+                                                                currentPage: page,
+                                                                totalPages
+                                                                
                                                                 
                                                             })
                                                         }
@@ -1407,14 +1514,22 @@ app.post("/modifier_produit",function(request,response)
                                                             console.log(err)
                                                             
                                                         }else{
-                                                
+                                                            const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
                                                             return response.render('produits', {
                                                                 nom: request.session.nom,
-                                                                produit: result,
+                                                                produit: paginatedData,
                                                                 fournisseurs : resultf,
                                                                 categories : resultc,
                                                                 cat : resultcat,
-                                                                message : "le produit a été modifié avec succès!"
+                                                                message : "le produit a été modifié avec succès!",
+                                                                currentPage : page,
+                                                                totalPages
                                                                 
                                                             })
                                                         }
@@ -1490,14 +1605,23 @@ app.get("/supprimer_produit",function(request,response)
                                             console.log(err)
                                             
                                         }else{
+                                            const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
                                 
                                             return response.render('produits', {
                                                 nom: request.session.nom,
-                                                produit: result,
+                                                produit: paginatedData,
                                                 fournisseurs : resultf,
                                                 categories : resultc,
                                                 cat : resultcat,
-                                                message : "le produit a été supprimé avec succès!"
+                                                message : "le produit a été supprimé avec succès!",
+                                                currentPage : page,
+                                                totalPages
                                                 
                                             })
                                         }
@@ -1543,12 +1667,21 @@ app.get("/fournisseurs",function(request,response)
                     console.log(err)
                     
                 }else{
-        
+                    const page = parseInt(request.query.page) || 1;
+                    const limit = 10; // Rows per page
+                    const startIndex = (page - 1) * limit;
+                    const endIndex = page * limit;
+                
+                    const paginatedData = result.slice(startIndex, endIndex);
+                    const totalPages = Math.ceil(result.length / limit);
+
                     return response.render('fournisseurs', {
-                        fournisseurs:result,
+                        fournisseurs:paginatedData,
                         nom : request.session.nom,
                         nbre_l : resultl,
-                        nbre_c : resultc
+                        nbre_c : resultc,
+                        currentPage : page,
+                        totalPages
                     }) 
         
         
@@ -1602,13 +1735,21 @@ app.post("/modifier_fournisseur",function(request,response)
                                 console.log(err)
                                 
                             }else{
-                    
+                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = result.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(result.length / limit);
                                 return response.render('fournisseurs', {
-                                    fournisseurs:result,
+                                    fournisseurs:paginatedData,
                                     nom : request.session.nom,
                                     nbre_l : resultl,
                                     nbre_c : resultc,
-                                    message : "le fournisseur a été modifié avec succè!"
+                                    message : "le fournisseur a été modifié avec succè!",
+                                    currentPage : page,
+                                    totalPages
                                 }) 
                     
                     
@@ -1729,13 +1870,21 @@ app.post("/ajouter_fournisseur",function(request,response)
                                 console.log(err)
                                 
                             }else{
-                    
+                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = result.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(result.length / limit);
                                 return response.render('fournisseurs', {
-                                    fournisseurs:result,
+                                    fournisseurs:paginatedData,
                                     nom : request.session.nom,
                                     nbre_l : resultl,
                                     nbre_c : resultc,
-                                    message : "cet email a déjà un compte"
+                                    message : "cet email a déjà un compte",
+                                    currentPage : page,
+                                    totalPages
                                 }) 
                     
                     
@@ -1778,13 +1927,22 @@ app.post("/ajouter_fournisseur",function(request,response)
                                         console.log(err)
                                         
                                     }else{
+                                        const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
                             
                                         return response.render('fournisseurs', {
-                                            fournisseurs:result,
+                                            fournisseurs:paginatedData,
                                             nom : request.session.nom,
                                             nbre_l : resultl,
                                             nbre_c : resultc,
-                                            message : "le fournisseur a été créé avec succès !"
+                                            message : "le fournisseur a été créé avec succès !",
+                                            currentPage : page,
+                                            totalPages
                                         }) 
                             
                             
@@ -1849,13 +2007,22 @@ app.get("/supprimer_fournisseur",function(request,response)
                                 console.log(err)
                                 
                             }else{
+                                const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
                     
                                 return response.render('fournisseurs', {
-                                    fournisseurs:result,
+                                    fournisseurs:paginatedData,
                                     nom : request.session.nom,
                                     nbre_l : resultl,
                                     nbre_c : resultc,
-                                    message : "le fournisseur a été supprimé avec succès !"
+                                    message : "le fournisseur a été supprimé avec succès !",
+                                    currentPage : page,
+                                    totalPages
                                 }) 
                     
                     
@@ -2015,14 +2182,24 @@ app.get("/supprimer_commande",function(request,response)
                                     console.log(err)
                                    
                                 }else{
+                                    const page = parseInt(request.query.page) || 1;
+                                    const limit = 10; // Rows per page
+                                    const startIndex = (page - 1) * limit;
+                                    const endIndex = page * limit;
+                                
+                                    const paginatedData = resultc.slice(startIndex, endIndex);
+                                    const totalPages = Math.ceil(resultc.length / limit);
+
                         
                                     return response.render('all_commandes', {
-                                        commande :resultc,
+                                        commande :paginatedData,
                                         nom : request.session.nom,
                                         produits : resultp1,
                                         message : "la commande a été supprimée avec succès!",
                                         pc : resultpc,
-                                        fournisseurs: resultf
+                                        fournisseurs: resultf,
+                                        currentPage : page,
+                                        totalPages
                                     }) 
                         
                         
@@ -2089,14 +2266,24 @@ app.get("/all_commandes",function(request,response)
                                 console.log(err)
                                
                             }else{
+                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = resultc.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(resultc.length / limit);
+
                     
                                 return response.render('all_commandes', {
-                                    commande :resultc,
+                                    commande :paginatedData,
                                     nom : request.session.nom,
                                     produits : resultp1,
                                     
                                     pc : resultpc,
-                                    fournisseurs: resultf
+                                    fournisseurs: resultf,
+                                    currentPage : page,
+                                    totalPages
                                 }) 
                     
                     
@@ -2240,25 +2427,36 @@ readable
                                 console.log(err)
                                 
                             }else{
+                                const page = parseInt(request.query.page) || 1;
+                    const limit = 10; // Rows per page
+                    const startIndex = (page - 1) * limit;
+                    const endIndex = page * limit;
+                
+                    const paginatedData = result.slice(startIndex, endIndex);
+                    const totalPages = Math.ceil(result.length / limit);
                     
                                 if(er==false){
                                 return response.render('produits', {
                                     nom: request.session.nom,
-                                    produit: result,
+                                    produit: paginatedData,
                                     fournisseurs : resultf,
                                     categories : resultc,
                                     cat : resultcat,
-                                    message : "l'importation a été faite avec succès!"
+                                    message : "l'importation a été faite avec succès!",
+                                    currentPage : page,
+                                    totalPages
                                     
                                 })
                             }else{
                                 return response.render('produits', {
                                     nom: request.session.nom,
-                                    produit: result,
+                                    produit: paginatedData,
                                     fournisseurs : resultf,
                                     categories : resultc,
                                     cat : resultcat,
-                                    message : "il y a eu une erreur, vérifier votre fichier"
+                                    message : "il y a eu une erreur, vérifier votre fichier",
+                                    currentPage : page,
+                                    totalPages
                                     
                                 })
                             }
@@ -2302,8 +2500,9 @@ app.get("/exporter",function(request,response)
                       .pipe(ws)
                       .on('finish', () => {
                         console.log('Exportation terminée.');
+                         response.download('output.csv');
                       });
-                    response.download('output.csv')
+                   
 
             
         }
@@ -2371,14 +2570,23 @@ app.post("/modifier_commande",function(request,response)
                                                 console.log(err)
                                                
                                             }else{
-                                    
+                                                const page = parseInt(request.query.page) || 1;
+                                                const limit = 10; // Rows per page
+                                                const startIndex = (page - 1) * limit;
+                                                const endIndex = page * limit;
+                                            
+                                                const paginatedData = resultc.slice(startIndex, endIndex);
+                                                const totalPages = Math.ceil(resultc.length / limit);
+        
                                                 return response.render('all_commandes', {
-                                                    commande :resultc,
+                                                    commande :paginatedData,
                                                     nom : request.session.nom,
                                                     produits : resultp1,
                                                     message : "la commande a été modifiée avec succès !",
                                                     pc : resultpc,
-                                                    fournisseurs: resultf
+                                                    fournisseurs: resultf,
+                                                    currentPage : page,
+                                                    totalPages
                                                 }) 
                                     
                                     
