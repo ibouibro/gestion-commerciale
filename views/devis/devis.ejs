@@ -6,7 +6,7 @@
 <%- include('../header') -%>
 
 <div class="main-content">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
    
     <%  if (locals?.message) {  %>
  
@@ -89,6 +89,27 @@
         <% }else{  %>
           Aucun devis trouvé
           <% } %>
+          <nav style="margin-top:30px;">
+            <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/devis?page=<%= currentPage - 1 %>">Previous</a>
+                    </li>
+                <% } %>
+    
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/devis?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+    
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/devis?page=<%= currentPage + 1 %>">Next</a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
     </div>
 </div>
 </div>

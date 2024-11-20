@@ -78,11 +78,20 @@ sql.query("select c.id, f.nom from commande c, fournisseur f, produit p where p.
                                                                 console.log(err);
                                                             }else{
                                                              
+                                                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = res.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(res.length / limit);
                                                                 response.render("livraison/livraisons",{
-                                                                    livraisons : res,
+                                                                    livraisons : paginatedData,
                                                                     nom : request.session.nom,
                                                                     commandes : resc,
-                                                                    message : "la livraison a été créée !"
+                                                                    message : "la livraison a été créée !",
+                                                                    currentPage : page,
+                                                                    totalPages
                                                                 })
                                                             }
                                                         })
@@ -205,10 +214,19 @@ sql.query("select c.id, f.nom from commande c, fournisseur f, produit p where p.
                     console.log(err);
                 }else{
                  
+                    const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = res.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(res.length / limit);
                     response.render("livraison/livraisons",{
-                        livraisons : res,
+                        livraisons : paginatedData,
                         nom : request.session.nom,
-                        commandes : resc
+                        commandes : resc,
+                        currentPage : page,
+                        totalPages
                     })
                 }
             })
@@ -261,11 +279,20 @@ sql.query("select c.id, f.nom from commande c, fournisseur f, produit p where p.
                                                                 console.log(err);
                                                             }else{
                                                              
+                                                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = res.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(res.length / limit);
                                                                 response.render("livraison/livraisons",{
-                                                                    livraisons : res,
+                                                                    livraisons : paginatedData,
                                                                     nom : request.session.nom,
                                                                     commandes : resc,
-                                                                    message : "la livraison a été supprimée"
+                                                                    message : "la livraison a été supprimée",
+                                                                    currentPage : page,
+                                                                    totalPages
                                                                 })
                                                             }
                                                         })
@@ -405,11 +432,20 @@ sql.query("select c.id, f.nom from commande c, fournisseur f, produit p where p.
                                                             console.log(err);
                                                         }else{
                                                          
+                                                            const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = res.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(res.length / limit);
                                                             response.render("livraison/livraisons",{
-                                                                livraisons : res,
+                                                                livraisons : paginatedData,
                                                                 nom : request.session.nom,
                                                                 commandes : resc,
-                                                                message : "la livraison a été modifiée avec succès !"
+                                                                message : "la livraison a été modifiée avec succès !",
+                                                                currentPage : page,
+                                                                totalPages
                                                             })
                                                         }
                                                     })

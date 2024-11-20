@@ -7,7 +7,7 @@
 <%- include('../header') -%>
 
 <div class="main-content">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
    
     <%  if (locals?.message) {  %>
  
@@ -21,13 +21,10 @@
   
 
   <div class="table-data__tool-right" style="margin-bottom:15px;">
-    <a href="/ajouter_facture_form" class="au-btn au-btn-icon au-btn--green au-btn--small" >
-        <i class="zmdi zmdi-plus"></i>créer facture</a>
+   
         <button  class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
           <i class="zmdi zmdi-plus"></i>créer facture sur devis</button>
-        <a href="/rapport_caisse" class="au-btn au-btn-icon au-btn--green au-btn--small" >
-          <i class="fas "></i>rapport de caisse</a>
-   
+       
 </div>
 <%  if (locals?.factures && locals?.factures.length != 0) { %>
   <input type="text" id="searchInput" class="form-control" style="width:300px;" placeholder="Search ...">
@@ -121,6 +118,28 @@ for(var j=0;j<paiement.length;j++)
         <% }else{  %>
           Aucune facture trouvée
           <% } %>
+
+          <nav style="margin-top:30px;">
+            <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/factures?page=<%= currentPage - 1 %>">Previous</a>
+                    </li>
+                <% } %>
+    
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/factures?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+    
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/factures?page=<%= currentPage + 1 %>">Next</a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
     </div>
 </div>
 </div>

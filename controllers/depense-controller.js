@@ -15,8 +15,17 @@ class controller{
                 console.log(err)
             }
             else{
+                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = resultp.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(resultp.length / limit);
                 return response.render('depenses/depenses', {
-                    depenses : resultp,
+                    depenses : paginatedData,
+                    currentPage : page,
+                    totalPages
                     
                    
                 });
@@ -44,9 +53,18 @@ class controller{
                         console.log(err)
                     }
                     else{
+                        const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = resultp.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(resultp.length / limit);
                         return response.render('depenses/depenses', {
-                            depenses : resultp,
-                            message : "la dépense a été créée !"
+                            depenses : paginatedData,
+                            message : "la dépense a été créée !",
+                            currentPage : page,
+                            totalPages
                            
                         });
                     }
@@ -73,9 +91,18 @@ supprimer_depense(request, response)
                         console.log(err)
                     }
                     else{
+                        const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = resultp.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(resultp.length / limit);
                         return response.render('depenses/depenses', {
-                            depenses : resultp,
-                            message : "la dépense a été supprimée !"
+                            depenses : paginatedData,
+                            message : "la dépense a été supprimée !",
+                            currentPage : page,
+                            totalPages
                            
                         });
                     }

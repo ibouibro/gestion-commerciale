@@ -5,7 +5,7 @@
 <%- include('../header') -%>
 
 <div class="main-content">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
    
     <%  if (locals?.message) {  %>
  
@@ -55,9 +55,7 @@
                      let del = "del"+livraisons[i].id;
                      let delx = "del"+livraisons[i].id+"x"; %>
                       <div class="table-data-feature">
-                          <button class="item"  data-toggle="modal" data-target="<%= targetx %>" data-placement="top" title="afficher">
-                              <i class="fa fa-eye"></i>
-                          </button>
+                          
                           <button class="item"  data-placement="top" title="Modifier" data-toggle="modal" data-target="<%= target %>">
                               <i class="zmdi zmdi-edit"></i>
                           </button>
@@ -86,6 +84,28 @@
         <% }else{  %>
           Aucune livraison trouvée
           <% } %>
+
+          <nav style="margin-top:30px;">
+            <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/livraisons?page=<%= currentPage - 1 %>">Previous</a>
+                    </li>
+                <% } %>
+    
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/livraisons?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+    
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/livraisons?page=<%= currentPage + 1 %>">Next</a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
     </div>
 </div>
 </div>

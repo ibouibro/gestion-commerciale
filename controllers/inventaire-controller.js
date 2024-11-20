@@ -11,10 +11,44 @@ class controller{
             {
                 
                        
-                return response.render("inventaire/inventaires",{
+                sql.query("select nom, id_produit from produit",(err,resp) =>{
+                    if(err)
+                    {
+                       console.log(err)
+                    }else{
+                     
+                        sql.query("select sum (pc.quantite) as c , c.date, pc.id_produit, p.nom from produit_commande pc, commande c, produit p where c.id = pc.id_commande and pc.id_commande in (select id_commande from livraison) and pc.id_produit = p.id_produit   group by pc.id_produit",(err,rese) =>{
+                            if(err)
+                            {
+                               console.log(err)
+                            }else{
+                             
+                                sql.query("select sum(pd.quantite) as c , f.date, pd.id_produit, p.nom from produit_devis pd,facture f, devis d,produit p where pd.id_devis = d.id and f.id_devis = d.id and pd.id_produit = p.id_produit  group by pd.id_produit",(err,ress) =>{
+                                    if(err)
+                                    {
+                                       console.log(err)
+                                    }else{
+                                     
+                                       return response.render("inventaire/inventaires",{
+                                            produits : resp,
+                                            nom : request.session.nom,
+                                            entree : rese,
+                                            sortie : ress,
+                                           debut: request.body.debut,
+                                           fin: request.body.fin
+                                        })
+                                
+                                    
+                                    }
+                                })
+                        
+                        
+                            
+                            }
+                        })
+                
                     
-                    nom : request.session.nom
-                    
+                    }
                 })
             }
             else
@@ -35,13 +69,13 @@ class controller{
                    console.log(err)
                 }else{
                  
-                    sql.query("select sum (pc.quantite) as c , pc.id_produit from produit_commande pc, commande c where c.id = pc.id_commande and pc.id_commande in (select id_commande from livraison) and c.date between '"+request.body.debut+"' and '"+request.body.fin+"'   group by pc.id_produit",(err,rese) =>{
+                    sql.query("select sum (pc.quantite) as c , c.date, pc.id_produit, p.nom from produit_commande pc, commande c, produit p where c.id = pc.id_commande and pc.id_commande in (select id_commande from livraison) and pc.id_produit = p.id_produit   group by pc.id_produit",(err,rese) =>{
                         if(err)
                         {
                            console.log(err)
                         }else{
                          
-                            sql.query("select sum(pd.quantite) as c , pd.id_produit from produit_devis pd,facture f, devis d where pd.id_devis = d.id and f.id_devis = d.id and f.date between '"+request.body.debut+"' and '"+request.body.fin+"' group by pd.id_produit",(err,ress) =>{
+                            sql.query("select sum(pd.quantite) as c , f.date, pd.id_produit, p.nom from produit_devis pd,facture f, devis d,produit p where pd.id_devis = d.id and f.id_devis = d.id and pd.id_produit = p.id_produit  group by pd.id_produit",(err,ress) =>{
                                 if(err)
                                 {
                                    console.log(err)

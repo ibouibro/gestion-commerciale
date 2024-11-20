@@ -187,13 +187,24 @@ enregistrerClient(request,response,email,nom,adresse, prenom,tel)
                                                
                                             }else{
                                                 console.log(resulta[0].c)
+
+                                                const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = result.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(result.length / limit);
+
                                                 return response.render('clients', {
                                                     nom: request.session.nom,
-                                                    r_client: result,
+                                                    r_client: paginatedData,
                                                     nbre_achat: resulta,
                                                     nbre_remb : resultr,
                                                     nbre_annulation: resultan,
-                                                    r_message : "le client a été ajouté avec succès!"
+                                                    r_message : "le client a été ajouté avec succès!",
+                                                    currentPage : page,
+                                                    totalPages
                                                 })
                                             }
                                             
@@ -228,10 +239,21 @@ enregistrerClient(request,response,email,nom,adresse, prenom,tel)
                 
                 }
                 else{
+
+                    const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = resultc.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(resultc.length / limit);
+
                     return response.render('clients', {
                         r_message: 'cet email a déjà un compte',
                         r_nom :request.session.nom,
-                        r_client : resultc
+                        r_client : paginatedData,
+                        currentPage : page,
+                        totalPages
                     })
                 }
         
@@ -254,10 +276,21 @@ enregistrerClient(request,response,email,nom,adresse, prenom,tel)
                 
                 }
                 else{
+
+                    const page = parseInt(request.query.page) || 1;
+                                                            const limit = 10; // Rows per page
+                                                            const startIndex = (page - 1) * limit;
+                                                            const endIndex = page * limit;
+                                                        
+                                                            const paginatedData = resultc.slice(startIndex, endIndex);
+                                                            const totalPages = Math.ceil(resultc.length / limit);
+
                     return response.render('clients', {
                         r_message: 'le client a été ajouté avec succès',
                         r_nom :request.session.nom,
-                        r_client : resultc
+                        r_client : paginatedData,
+                        currentPage : page,
+                        totalPages
                     })
                 }
         

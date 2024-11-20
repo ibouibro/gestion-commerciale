@@ -135,7 +135,7 @@ tfoot td {
 
     </style>
     <!-- En-tête de la facture avec logo -->
-    <div class="header">
+    <div class="header table table-container ">
         <img src="/logo.png" alt="Logo de l'entreprise">
         <h2>NETSYSTEME</h2>
         <p>spécialisée dans les domaines des systèmes d'information, du développement informatique, des réseaux et des télécommunications. Géolocalisation, électronique et domotique, systèmes solaires, vidéo surveillance </p>
@@ -156,7 +156,7 @@ tfoot td {
     </div>
 
     <!-- Tableau des articles facturés -->
-    <div class="items">
+    <div class="items table-container">
         <table>
             <thead>
             <tr>
@@ -193,9 +193,9 @@ tfoot td {
     </div>
 
     <!-- Totaux -->
-    <div class="total-section">
-        <div></div>
-        <div>
+    <div class="total-section" style="width:300px;">
+        
+        <div  style="width:300px;">
 
             <table class="order-table"><thead><th><strong>Total HT :</strong></th>
             <th><span class="highlight"><%= new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', minimumFractionDigits: 2 }).format(montantHTtotal.toFixed(2)) %></span></th></thead>

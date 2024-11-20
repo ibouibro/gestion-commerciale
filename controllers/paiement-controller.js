@@ -42,12 +42,22 @@ ajouter_paiement(request,response)
                                         }
                                         else{
                                             
+                                            const page = parseInt(request.query.page) || 1;
+                                            const limit = 10; // Rows per page
+                                            const startIndex = (page - 1) * limit;
+                                            const endIndex = page * limit;
+                                        
+                                            const paginatedData = resultp.slice(startIndex, endIndex);
+                                            const totalPages = Math.ceil(resultp.length / limit);
+
                                             return response.render('paiements/paiements', {
                                                 factures : resultf,
                                                 acomptes : resulta,
-                                                paiements : resultp,
+                                                paiements : paginatedData,
                                                 ttc : resultttc,
-                                                message : "le paiement a été créé"
+                                                message : "le paiement a été créé",
+                                                currentPage : page,
+                                                totalPages
                                             
                                             });
                                         }
@@ -98,13 +108,21 @@ modifier_paiement(request,response)
                                             console.log(err);
                                         }
                                         else{
-                                            
+                                            const page = parseInt(request.query.page) || 1;
+                                            const limit = 10; // Rows per page
+                                            const startIndex = (page - 1) * limit;
+                                            const endIndex = page * limit;
+                                        
+                                            const paginatedData = resultp.slice(startIndex, endIndex);
+                                            const totalPages = Math.ceil(resultp.length / limit);
                                             return response.render('paiements/paiements', {
                                                 factures : resultf,
                                                 acomptes : resulta,
-                                                paiements : resultp,
+                                                paiements : paginatedData,
                                                 ttc : resultttc,
-                                                message : "le paiement a été modifié"
+                                                message : "le paiement a été modifié",
+                                                currentPage : page,
+                                                totalPages
                                             
                                             });
                                         }
@@ -149,12 +167,20 @@ modifier_paiement(request,response)
                                         console.log(err);
                                     }
                                     else{
-                                        
+                                        const page = parseInt(request.query.page) || 1;
+                                        const limit = 10; // Rows per page
+                                        const startIndex = (page - 1) * limit;
+                                        const endIndex = page * limit;
+                                    
+                                        const paginatedData = resultp.slice(startIndex, endIndex);
+                                        const totalPages = Math.ceil(resultp.length / limit);
                                         return response.render('paiements/paiements', {
                                             factures : resultf,
                                             acomptes : resulta,
-                                            paiements : resultp,
-                                            ttc : resultttc
+                                            paiements : paginatedData,
+                                            ttc : resultttc,
+                                            currentPage : page,
+                                            totalPages
                                         
                                         });
                                     }

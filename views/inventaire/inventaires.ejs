@@ -9,7 +9,7 @@
 <%- include('../header') -%>
 
 <div class="main-content">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
    
     <%  if (locals?.message) {  %>
  
@@ -20,24 +20,24 @@
     
   <% } %>
 
-  <form accept-charset="UTF-8" role="form"  method="post" action="/afficher_inventaire">
-    choisir un intervalle de date :
+  <div class="col-lg-6" style="padding:0;">
+    
     <div class="form-horizontal" style="display:flex; justify-content:space-between;">
         
         <div>
            
-            <input type="date" placeholder="date début" class="form-control" style="width:200px;" name="debut">
+            <input type="date" placeholder="date début" onchange="filterTable()" id="startDate" class="form-control" style="width:200px;" name="debut">
         </div>
 
               <div>
                 
-                <input type="date" placeholder="date fin" class="form-control" style="width:200px;" name="fin">
+                <input type="date" placeholder="date fin" onchange="filterTable()" id="endDate" class="form-control" style="width:200px;margin-left:15px;" name="fin">
               </div>
                 
 
-        <input class="btn  btn-success "  type="submit" value="afficher">
+        
       </div>
-      </form>
+    </div>
   
 
   <div class="table-data__tool-right" style="margin-bottom:15px;">
@@ -45,15 +45,14 @@
 </div>
 
 <% 
-    if ((locals?.produits && locals?.produits.length != 0) ) { 
-       %>
-       Date : entre <%= debut %>   et   <%= fin %>
+    if ((locals?.produits && locals?.produits.length != 0) ) {   %>
+       
     <div class="table-responsive table-responsive-data2" style="width:100%;">
       
-        <table class="table table-borderless table-striped table-earning">
+        <table class="table table-borderless table-striped table-earning" id="myTable">
           <thead>
             <tr>
-              
+              <th>date</th>
               <th>produit</th>
               <th>entrées</th>
               <th>sorties</th>
@@ -63,24 +62,18 @@
             </tr>
           </thead>
           <tbody>
-            <%  for(var i=0; i< produits.length; i++) {
-              let e=0; let s =0;
-              for(var j=0; j< entree.length; j++) {
-                if(produits[i].id_produit == entree[j].id_produit){ e = e+ entree[j].c;  %>
+            
                          
-                         <% }  }
-                         for(var j=0; j< sortie.length; j++) {
-                          if(produits[i].id_produit == sortie[j].id_produit){  s = s+ sortie[j].c;  %>
+                        
+            <%    for(var j=0; j< sortie.length; j++) {
+                           %>
                                   
-                                   <% } }
                                   
-
-                         %>
             <tr>
-              
-              <td> <%= produits[i].nom %> </td>
-            <td> <%= e %> </td>
-            <td> <%= s %></td>
+              <td><%= sortie[j].date %></td>
+              <td> <%= sortie[j].nom %> </td>
+            <td> 0 </td>
+            <td> <%= sortie[j].c %></td>
            
             </tr>
             <% }  %>
@@ -88,6 +81,20 @@
            
 
               
+            <%    for(var j=0; j< entree.length; j++) {
+              %>
+                     
+                     
+<tr>
+ <td><%= entree[j].date %></td>
+ <td> <%= entree[j].nom %> </td>
+<td><%= entree[j].c %> </td>
+<td> 0</td>
+
+</tr>
+<% }  %>
+
+
     
               
     
@@ -108,6 +115,38 @@
 
 
 
+<script>
 
+  function filterTable() {
+    if(document.getElementById("startDate").value.length != 0 && document.getElementById("endDate").value.length != 0 ){
+              const startDate = new Date(document.getElementById("startDate").value);
+              const endDate = new Date(document.getElementById("endDate").value);
+              const table = document.getElementById("myTable");
+              const rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+  
+              for (let i = 0; i < rows.length; i++) {
+                  const dateCell = rows[i].getElementsByTagName("td")[0];
+                  const rowDate = new Date(dateCell.textContent);
+  
+                  if(endDate >= startDate)
+                  {
+                  if (rowDate >= startDate && rowDate <= endDate) {
+                      rows[i].style.display = "";
+                  } else {
+                      rows[i].style.display = "none";
+                  }
+                }else{
+                  if (rowDate >= endDate && rowDate <= startDate) {
+                      rows[i].style.display = "";
+                  } else {
+                      rows[i].style.display = "none";
+                  }
+                }
+              }
+            }
+          }
+  
+  </script>
+  
 <!-- end modal large -->
 <%- include('../footer') -%>

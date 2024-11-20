@@ -17,6 +17,7 @@
     <link href="/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+   
 
     <!-- Bootstrap CSS-->
     <link href="/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
@@ -248,6 +249,31 @@ tfoot td {
     text-decoration: underline;
 }
 
+.table-container {
+      max-width: 100%;
+      overflow-x: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+  }
+
+  .pagination-buttons {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+  }
+  .pagination-buttons button, .pagination-buttons a {
+      padding: 5px 10px;
+      cursor: pointer;
+      text-decoration: none;
+      color: black;
+      border: 1px solid #000;
+      border-radius: 3px;
+  }
+  .pagination-buttons a.active {
+      font-weight: bold;
+      background-color: #ddd;
+  }
   </style>
 
 <body class="animsition">
@@ -283,9 +309,21 @@ tfoot td {
                             <a href="/fournisseurs">
                                 <i class="fas fa-truck"></i>Fournisseurs</a>
                         </li>
-                        <li>
-                            <a href="/produits">
+                     
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
                                 <i class="fas fa-box"></i>Produits</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="/produits">Liste produits</a>
+                                </li>
+                                <li>
+                                    <a href="/exporter">exporter produits</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#smallmodal_i">importer produits</a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="/categories">
@@ -308,9 +346,21 @@ tfoot td {
                                 <i class="fas fa-copy"></i>Devis</a>
                         </li>
 
-                        <li>
-                            <a href="/factures">
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
                                 <i class="fas fa-copy"></i>Factures</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="/factures">Liste factures</a>
+                                </li>
+                                <li>
+                                    <a href="/ajouter_facture_form">créer facture</a>
+                                </li>
+                                <li>
+                                    <li>
+                                        <a href="/rapport_caisse">rapport de caisse</a>
+                                    </li></li>
+                            </ul>
                         </li>
                         <li>
                             <a href="/inventaires">
@@ -343,9 +393,8 @@ tfoot td {
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="#">
-                    <img src="/images/icon/logo.png" alt="Cool Admin" />
-                </a>
+              
+                <div style="font-size:23px;color:rgba(2,40,150,.5)">GES</div><b><div style="font-size:23px;color:rgba(221, 50, 24, 0.5)">COM</div></b>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
@@ -363,9 +412,20 @@ tfoot td {
                             <a href="/fournisseurs">
                                 <i class="fas fa-truck"></i>Fournisseurs</a>
                         </li>
-                        <li>
-                            <a href="/produits">
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
                                 <i class="fas fa-box"></i>Produits</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="/produits">Liste produits</a>
+                                </li>
+                                <li>
+                                    <a href="/exporter">exporter produits</a>
+                                </li>
+                                <li>
+                                    <div  data-toggle="modal" data-target="#smallmodal_i">importer produits</div>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="/categories">
@@ -388,9 +448,22 @@ tfoot td {
                                 <i class="fas fa-copy"></i>Devis</a>
                         </li>
 
-                        <li>
-                            <a href="/factures">
+                        
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
                                 <i class="fas fa-copy"></i>Factures</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="/factures">Liste factures</a>
+                                </li>
+                                <li>
+                                    <a href="/ajouter_facture_form">créer facture</a>
+                                </li>
+                                <li>
+                                    <li>
+                                        <a href="/rapport_caisse">rapport de caisse</a>
+                                    </li></li>
+                            </ul>
                         </li>
                         <li>
                             <a href="/inventaires">
@@ -499,4 +572,46 @@ tfoot td {
                     </div>
                 </div>
             </header>
+
+            <div class="modal fade" id="smallmodal_i" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel_i" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="smallmodalLabel_i">importer csv produit</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form action="/importer" method="post">
+                    <div class="modal-body">
+                      <p>
+                        <div class="form-group">
+                          <label for="nom" class=" form-control-label">CSV : </label>
+                          <input type="file" required id="my-file" style="width:400px;" onchange="readText(event)" accept=".csv">
+                         
+                      </div>
+                      <input type="hidden" class="form-control" name="fichier_csv" id="hid_f">
+              
+                     
+                       </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
+                      <button type="submit" class="btn btn-primary">importer</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <script>
+              
+                async function readText(event) {
+                  const file = event.target.files.item(0)
+                  const text = await file.text();
+                  
+                  document.getElementById("hid_f").value = text;
+                  
+                }
+                        </script>
             <!-- HEADER DESKTOP-->

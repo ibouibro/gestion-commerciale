@@ -37,13 +37,22 @@ sql.query("select d.id, d.date, d.id_client, c.nom, c.prenom from devis d, clien
                             {
                                console.log(err)
                             }else{
+                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = res.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(res.length / limit);
                              
                                return response.render("devis/devis",{
-                                    devis : res,
+                                    devis : paginatedData,
                                     nom : request.session.nom,
                                     produits : resp,
                                     pd : respd,
-                                    clients : resc
+                                    clients : resc,
+                                    currentPage : page,
+                                    totalPages
                                 })
                         
                                 return;
@@ -113,13 +122,22 @@ sql.query("delete from produit_devis where id_devis = '"+id+"' ",(err,respd) =>{
                                                console.log(err)
                                             }else{
                                              
+                                                const page = parseInt(request.query.page) || 1;
+                                                const limit = 10; // Rows per page
+                                                const startIndex = (page - 1) * limit;
+                                                const endIndex = page * limit;
+                                            
+                                                const paginatedData = res.slice(startIndex, endIndex);
+                                                const totalPages = Math.ceil(res.length / limit);
                                                return response.render("devis/devis",{
-                                                    devis : res,
+                                                    devis : paginatedData,
                                                     nom : request.session.nom,
                                                     produits : resp,
                                                     pd : respd,
                                                     clients : resc,
-                                                    message : "le devis a été supprimé avec succès !"
+                                                    message : "le devis a été supprimé avec succès !",
+                                                    currentPage : page,
+                                                    totalPages
                                                 })
                                         
                                                 return;
@@ -213,13 +231,22 @@ var type="devis";
                                console.log(err)
                             }else{
                              
+                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = res.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(res.length / limit);
                                return response.render("devis/devis",{
-                                    devis : res,
+                                    devis : paginatedData,
                                     nom : request.session.nom,
                                     produits : resp,
                                     pd : respd,
                                     clients : resc,
-                                    message : "le devis a été modifié avec succès!"
+                                    message : "le devis a été modifié avec succès!",
+                                    currentPage : page,
+                                    totalPages
                                 })
                         
                                 return;
@@ -345,13 +372,22 @@ sql.query("select d.id, d.date, d.id_client, c.nom, c.prenom from devis d, clien
                                console.log(err)
                             }else{
                              
+                                const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = res.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(res.length / limit);
                                return response.render("devis/devis",{
-                                    devis : res,
+                                    devis : paginatedData,
                                     nom : request.session.nom,
                                     produits : resp,
                                     pd : respd,
                                     clients : resc,
-                                    message : "le devis a été créé avec succès"
+                                    message : "le devis a été créé avec succès",
+                                    currentPage : page,
+                                    totalPages
                                 })
                         
                                 return;

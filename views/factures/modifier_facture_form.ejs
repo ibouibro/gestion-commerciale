@@ -3,14 +3,22 @@
 
 <div class="main-content">
 
+  <div class="table-container">
+
+    <div class="card-header">
+      <div class="card-title">
+        <h5>Modification de facture</h5>
+      </div>
+      
+          </div>
   <form action="/modifier_facture" method="post">
 
    <input type="hidden" name="id" value="<%= facture.id %> ">
    <input type="hidden" name="id_devis" value="<%= facture.id_devis %> ">
 
-    <div class="form-group" style="margin:19px;">
+    <div class="form-group" >
 Client
- <select class="form-control" style="width:200px;"  class="col-md-6" required  name="id_client">
+ <select class="form-control" style="width:200px;"   required  name="id_client">
     <option value="<%= facture.id_client %> "><%= facture.id_client+". " %><%= facture.prenom %> <%= facture.nom %> </option>
    <%   for(var j=0; j< clients.length; j++) {  
      if(clients[j].id_client != facture.id_client){ %> 
@@ -111,13 +119,13 @@ Client
           <div style="width:50px;">
             
               <label for="input4">tva</label></div>
-            <div style="width:30px;"><input type="checkbox" onchange="f2()" id="tva" name="tva" value="tva" class="form-control" style="width:30px;"  placeholder=""></div>
+            <div style="width:30px;"><input type="checkbox" <% if (facture.tva == 18){ %> checked <% } %>  onchange="f2()" id="tva" name="tva" value="tva" class="form-control" style="width:30px;"  placeholder=""></div>
           </div>
         
 <div class="input-group">
           <div style="width:90px;">
             <label for="input4">Remise %</label></div>
-            <div style="width:100px;"><input type="number" required oninput="f2()" id="rem" name="rem" min="0" value="0"  class="form-control" style="width:100px;"  placeholder=""></div>
+            <div style="width:100px;"><input type="number" value="<%= facture.remise %>" required oninput="f2()" id="rem" name="rem" min="0" value="0"  class="form-control" style="width:100px;"  placeholder=""></div>
           </div>
           <div class="input-group">
             <div style="width:90px;">
@@ -132,6 +140,7 @@ Client
     </form>
     </div>
   </div>
+</div>
     <script>
       function del1(event)
       {
@@ -178,7 +187,7 @@ Client
           </div>
           <div>
            <div></div>
-            <input type="number" required class="form-control" name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
+            <input type="number" required class="form-control"  name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
           </div>
           <div>
           <div></div>
@@ -262,7 +271,27 @@ let remise =0;
                                 
 
                                 
+                                    let child= document.getElementById("group1").children;
 
+let tax=0;
+let ht =0;
+let remise =0;
+  for(var i=0;i<child.length;i++)
+  {
+   let nbr = parseInt(child[i].children[3].children[1].value);
+
+   child[i].children[4].children[1].value=nbr *child[i].children[1].children[1].value;
+   let val =  parseInt(child[i].children[4].children[1].value);
+   if(document.getElementById("tva").checked==true){
+     tax= tax + val*18/100; }
+   ht = ht + val;
+   remise = remise + val*(document.getElementById("rem").value)/100;
+  }
+  document.getElementById("taxe").value=tax;
+  document.getElementById("ht").value=ht;
+  let val2 = parseInt(document.getElementById("taxe").value)+parseInt(document.getElementById("ht").value);
+  document.getElementById("ttc").value=(val2-remise);
+  document.getElementById("remise").value=remise;
                                     
                                    // stockTable.innerHTML=all;
                                   } catch (error) {
@@ -270,7 +299,7 @@ let remise =0;
                                     
                                   }
 
-                                  f3();
+                                  
                                 }
 
 
@@ -321,7 +350,7 @@ let remise =0;
                                     if(document.getElementById("tva").checked==true){
                                       tax= tax + val*18/100; }
                                     ht = ht + val;
-                                    remise = remise + val*(document.getElementByid("rem").value)/100;
+                                    remise = remise + val*(document.getElementById("rem").value)/100;
                                    }
                                    document.getElementById("taxe").value=tax;
                                    document.getElementById("ht").value=ht;

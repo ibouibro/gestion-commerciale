@@ -5,7 +5,7 @@
 <%- include('../header') -%>
 
 <div class="main-content">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
    
     <%  if (locals?.message) {  %>
  
@@ -59,9 +59,7 @@
                      let delx = "del"+paiements[i].id+"x"; %>
                       <div class="table-data-feature">
                          
-                          <button class="item"  data-placement="top" title="Modifier" data-toggle="modal" data-target="<%= target %>">
-                              <i class="zmdi zmdi-edit"></i>
-                          </button>
+                          
                          
                       </div>
                   </td>
@@ -83,6 +81,28 @@
         <% }else{  %>
           Aucun paiement trouvé
           <% } %>
+
+          <nav style="margin-top:30px;">
+            <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/paiements?page=<%= currentPage - 1 %>">Previous</a>
+                    </li>
+                <% } %>
+    
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/paiements?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+    
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/paiements?page=<%= currentPage + 1 %>">Next</a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
     </div>
 </div>
 </div>
@@ -131,10 +151,10 @@
     {
         if(paiements[i].id_facture == ttc[j].id)
         {
-        tt= tt + ttc[j].ttc -val; }
+        tt= tt + ttc[j].ttc ; }
     }
 
-  reste =tt;
+  reste =tt - val;
    
     %>
 <script>
@@ -207,7 +227,7 @@
   <div>
   <div class="form-group">
     <label for="tel" class=" form-control-label">Facture</label>
-    <select name="id_facture" required id="fac" onchange="f(event)">
+    <select name="id_facture" required id="fac" class="form-control" onchange="f(event)">
       <option value="">choisir une facture</option>
       <% for (var i=0; i< factures.length; i++){
           %>
@@ -274,8 +294,8 @@ async function f(event) {
                                     });
 
                                     try {
-                                    const response = await fetch('/api/acompte');
-                                    const z = await response.json();
+                                    const response1 = await fetch('/api/acompte');
+                                    const z = await response1.json();
                                     
                                  
                                   
@@ -297,8 +317,8 @@ async function f(event) {
                                     
 
                                     try {
-                                    const response = await fetch('/api/reste');
-                                    const t = await response.json();
+                                    const response2 = await fetch('/api/paiement');
+                                    const t = await response2.json();
                                     
                                  
                                   
@@ -319,7 +339,7 @@ async function f(event) {
                                     
 
                                   event.target.parentNode.parentNode.children[2].children[1].value=val;
-                                  target.parentNode.parentNode.children[1].children[1].value="0"
+                                  event.target.parentNode.parentNode.children[1].children[1].value="0"
 
                                 
 
@@ -376,8 +396,8 @@ async function f(event) {
                                     });
 
                                     try {
-                                    const response = await fetch('/api/acompte');
-                                    const z = await response.json();
+                                    const response1 = await fetch('/api/acompte');
+                                    const z = await response1.json();
                                     
                                  
                                   
@@ -399,8 +419,8 @@ async function f(event) {
                                     
 
                                     try {
-                                    const response = await fetch('/api/reste');
-                                    const t = await response.json();
+                                    const response2 = await fetch('/api/paiement');
+                                    const t = await response2.json();
                                     
                                  
                                   

@@ -3,9 +3,17 @@
 
 <div class="main-content">
 
-  <form action="ajouter_facture" method="post">
+  <div class="table-container">
+    <div class="card-header">
+<div class="card-title">
+  <h5>Création de facture</h5>
+</div>
 
-    <div class="form-horizontal" style="width:450px;justify-content:space-between;padding:14px;">
+    </div>
+    
+  <form action="/ajouter_facture" method="post">
+
+    <div class="form-horizontal col-lg-12" style="display:flex;justify-content:space-between;padding:0;">
     <div class="form-group" >
 
       Date 
@@ -41,7 +49,7 @@ Client
           </div>
           <div>
             <label for="input1">quantité</label>
-            <input type="number" required class="form-control" name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
+            <input type="number" required value="1" class="form-control" name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
           </div>
           <div>
             <label for="input1">Stock</label>
@@ -125,7 +133,9 @@ Client
         </div>
       
     </form>
+  </div>
     </div>
+  </div>
 
     <script>
       function del1(event)
@@ -173,7 +183,7 @@ Client
           </div>
           <div>
            <div></div>
-            <input type="number" required class="form-control" name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
+            <input type="number" required value="1" class="form-control" name="quant[]" oninput="f1(event)" style="width:170px;" min="1">
           </div>
           <div>
           <div></div>

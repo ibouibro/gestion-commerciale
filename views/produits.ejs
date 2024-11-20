@@ -8,7 +8,7 @@
 <%- include('header') -%>
 
 <div class="main-content">
-  <div class="col-lg-9">
+  <div class="col-lg-12">
    
     <%  if (locals?.message) {  %>
  
@@ -24,11 +24,7 @@
   <div class="table-data__tool-right" style="margin-bottom:15px;width:900px;">
     <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
         <i class="zmdi zmdi-plus"></i>ajouter produit</button>
-        <a href="/exporter" class="au-btn au-btn-icon au-btn--green au-btn--small" >
-          <i class="zmdi zmdi-plus"></i>exporter données produits</a>
-          <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#smallmodal_i">
-            <i class="zmdi zmdi-plus"></i>importer données produits</button>
-            
+       
      
    
 </div>
@@ -38,7 +34,7 @@
   <input type="text" id="searchInput" class="form-control" style="width:300px;margin-bottom:6px;" placeholder="Search ...">
     <div class="table-responsive table-responsive-data2" style="width:100%;">
       
-        <table class="table table-borderless table-striped table-earning" id="clientTable">
+        <table class="table table-borderless table-striped table-earning " id="clientTable">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -98,6 +94,30 @@
         <% }else{  %>
           Aucun produit trouvé
           <% } %>
+
+
+          <nav style="margin-top:30px;">
+            <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/produits?page=<%= currentPage - 1 %>">Previous</a>
+                    </li>
+                <% } %>
+    
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/produits?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+    
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/produits?page=<%= currentPage + 1 %>">Next</a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
+
     </div>
 </div>
 </div>
@@ -602,45 +622,7 @@ reader.readAsDataURL(files[0]);
 </div>
 
 
-<div class="modal fade" id="smallmodal_i" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel_i" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="smallmodalLabel_i">importer csv produit</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="/importer" method="post">
-      <div class="modal-body">
-        <p>
-          <div class="form-group">
-            <label for="nom" class=" form-control-label">CSV : </label>
-            <input type="file" required id="my-file" style="width:400px;" onchange="readText(event)" accept=".csv">
-           
-        </div>
-        <input type="hidden" class="form-control" name="fichier_csv" id="hid_f">
 
-        <script>
-
-async function readText(event) {
-  const file = event.target.files.item(0)
-  const text = await file.text();
-  
-  document.getElementById("hid_f").value = text;
-  
-}
-        </script>
-         </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">annuler</button>
-        <button type="submit" class="btn btn-primary">importer</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 <!-- end modal large -->
 <%- include('footer') -%>

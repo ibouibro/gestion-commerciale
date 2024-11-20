@@ -4,7 +4,7 @@
 <%- include('../header') -%>
 
 <div class="main-content">
-  <div class="col-lg-9">
+ <div class="col-lg-12">
    
     <%  if (locals?.message) {  %>
  
@@ -39,20 +39,9 @@
               </tr>
             </thead>
             <tbody>
-              <%  
-              for(var i=0; i < livraisons.length; i++) { %>
-              <tr>
-                <td> <%= livraisons[i].id %> </td>
-                <td> <%= livraisons[i].date %> </td>
-              <td> <%= livraisons[i].montant %> </td>
-              
-             
-               
-              </tr
-            <% }  %>
                 
            
-    Ce fournisseur n'a pas encore de livraisons
+    
     
             <!-- Add more rows as needed -->
           </tbody>
@@ -60,6 +49,85 @@
         <% }else{  %>
           aucune livraison trouvée
           <% } %>
+
+          <div class="pagination-buttons">
+            <button onclick="prevPage()">Previous</button>
+            <span id="pageNumbers" style="display:flex;flex-direction:row;"></span>
+            <button onclick="nextPage()">Next</button>
+        </div>
+
+        <script>
+          // Data passed from the server-side EJS
+          const data = <%- JSON.stringify(livraisons) %>;
+        
+          // Pagination variables
+          let currentPage = 1;
+          const rowsPerPage = 5;
+        
+          // Function to display table rows for the current page
+          function displayTableRows() {
+              const tableBody = document.querySelector("#clientTable tbody");
+              tableBody.innerHTML = ""; // Clear previous rows
+        
+              const start = (currentPage - 1) * rowsPerPage;
+              const end = start + rowsPerPage;
+              const paginatedData = data.slice(start, end);
+        
+              paginatedData.forEach((row) => {
+                  const tr = document.createElement("tr");
+                  tr.innerHTML = `<td>${row.id}</td><td> `+ `${row.date} `+ `</td><td>
+                              ${row.montant}</td>`;
+                  tableBody.appendChild(tr);
+              });
+        
+              displayPagination();
+          }
+        
+          // Function to display pagination links
+          function displayPagination() {
+              const pageNumbers = document.getElementById("pageNumbers");
+              pageNumbers.innerHTML = ""; // Clear previous pagination links
+        
+              const totalPages = Math.ceil(data.length / rowsPerPage);
+        
+              for (let i = 1; i <= totalPages; i++) {
+                  const pageLink = document.createElement("a");
+                  pageLink.textContent = i;
+                  pageLink.href = "#";
+                  pageLink.classList.add("page-link");
+                  if (i === currentPage) pageLink.classList.add("active");
+        
+                  pageLink.addEventListener("click", (e) => {
+                      e.preventDefault();
+                      currentPage = i;
+                      displayTableRows();
+                  });
+        
+                  pageNumbers.appendChild(pageLink);
+              }
+          }
+        
+          // Function to go to the previous page
+          function prevPage() {
+              if (currentPage > 1) {
+                  currentPage--;
+                  displayTableRows();
+              }
+          }
+        
+          // Function to go to the next page
+          function nextPage() {
+              const totalPages = Math.ceil(data.length / rowsPerPage);
+              if (currentPage < totalPages) {
+                  currentPage++;
+                  displayTableRows();
+              }
+          }
+        
+          // Initial display
+          displayTableRows();
+        </script>
+
     </div>
 </div>
 </div>

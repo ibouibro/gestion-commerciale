@@ -47,15 +47,24 @@ class controller{
                                                 {
                                                     console.log(err);
                                                 }else{
+                                                    const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = result.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(result.length / limit);
                                                     
                                                     return response.render('factures/factures', {
-                                                        factures: result,
+                                                        factures: paginatedData,
                                                         nom : request.session.nom,
                                                         clients : resultc,
                                                         devis : resultd,
                                                         ttc : resultttc,
                                                         paiement : resultpai,
-                                                        produits : resultp
+                                                        produits : resultp,
+                                                        currentPage : page,
+                                                        totalPages
                                                     })
                                                 
                                                     
@@ -100,26 +109,26 @@ rapport_caisse(request,response)
  if(request.session.connected == true)
  {
    
-    sql.query(" select f.nom, c.montant as sortie from commande c, fournisseur f where  c.id_fournisseur = f.id and c.date  between '"+request.body.debut+"' and '"+request.body.fin+"' ", function (err, resultc, fields) {
+    sql.query(" select f.nom, c.date, c.montant as sortie from commande c, fournisseur f where  c.id_fournisseur = f.id ", function (err, resultc, fields) {
         if (err) 
         {
             console.log(err);
         }else{
             
-            sql.query(" select c.nom, c.prenom, p.montant as entree from paiement p, facture f, devis d, client c where c.id_client = d.id_client and p.id_facture = f.id and f.id_devis = d.id  and p.date between '"+request.body.debut+"' and '"+request.body.fin+"'  ", function (err, resultv, fields) {
+            sql.query(" select c.nom, p.date, c.prenom, p.montant as entree from paiement p, facture f, devis d, client c where c.id_client = d.id_client and p.id_facture = f.id and f.id_devis = d.id  ", function (err, resultv, fields) {
                 if (err) 
                 {
                     console.log(err);
                 }else{
                     
                     
-                    sql.query(" select f.acompte as entree, c.nom, c.prenom from facture f, client c, devis d where c.id_client = d.id_client and f.id_devis = d.id and f.date between '"+request.body.debut+"' and '"+request.body.fin+"'  ", function (err, resulta, fields) {
+                    sql.query(" select f.acompte as entree, f.date, c.nom, c.prenom from facture f, client c, devis d where c.id_client = d.id_client and f.id_devis = d.id  ", function (err, resulta, fields) {
                         if (err) 
                         {
                             console.log(err);
                         }else{
                             
-                            sql.query(" select d.montant as sortie from depense d where d.date  between '"+request.body.debut+"' and '"+request.body.fin+"'  ", function (err, resultd, fields) {
+                            sql.query(" select d.montant as sortie, d.date from depense d ", function (err, resultd, fields) {
                                 if (err) 
                                 {
                                     console.log(err);
@@ -216,15 +225,24 @@ ajouter_facture_sd(request, response)
                                                     console.log(err);
                                                 }else{
                                                     
+                                                    const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = result.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(result.length / limit);
                                                     return response.render('factures/factures', {
-                                                        factures: result,
+                                                        factures: paginatedData,
                                                         nom : request.session.nom,
                                                         clients : resultc,
                                                         devis : resultd,
                                                         ttc : resultttc,
                                                         paiement : resultpai,
                                                         produits : resultp,
-                                                        message : "la facture a été créée avec succès!"
+                                                        message : "la facture a été créée avec succès!",
+                                                        currentPage : page,
+                                                        totalPages
                                                     })
                                                 
                                                     
@@ -369,16 +387,24 @@ ajouter_facture(request,response)
                                                 {
                                                     console.log(err);
                                                 }else{
-                                                    
+                                                    const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = result.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(result.length / limit);
                                                     return response.render('factures/factures', {
-                                                        factures: result,
+                                                        factures: paginatedData,
                                                         nom : request.session.nom,
                                                         clients : resultc,
                                                         devis : resultd,
                                                         ttc : resultttc,
                                                         paiement : resultpai,
                                                         produits : resultp,
-                                                        message : "la facture a été créée avec succès!"
+                                                        message : "la facture a été créée avec succès!",
+                                                        currentPage : page,
+                                                        totalPages
                                                     })
                                                 
                                                     
@@ -507,15 +533,24 @@ supprimer_facture(request,response)
                                                     console.log(err);
                                                 }else{
                                                     
+                                                    const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = result.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(result.length / limit);
                                                     return response.render('factures/factures', {
-                                                        factures: result,
+                                                        factures: paginatedData,
                                                         nom : request.session.nom,
                                                         clients : resultc,
                                                         devis : resultd,
                                                         ttc : resultttc,
                                                         paiement : resultpai,
                                                         produits : resultp,
-                                                        message : "la facture a été supprimée"
+                                                        message : "la facture a été supprimée",
+                                                        currentPage : page,
+                                                        totalPages
                                                     })
                                                 
                                                     
@@ -581,7 +616,7 @@ modifier_facture(request,response)
                 tva=18;
             }
 
-            sql.query("update devis d, facture f set d.id_client = '"+request.body.id_client+"', f.acompte = '"+request.body.acompte+"', d.tva = '"+tva+"', d.remise = '"+request.body.remise+"' where f.id_devis = d.id and f.id = '"+request.body.id+"' ",(err,res) =>{
+            sql.query("update devis d, facture f set d.id_client = '"+request.body.id_client+"', f.acompte = '"+request.body.acompte+"', d.tva = '"+tva+"', d.remise = '"+request.body.rem+"' where f.id_devis = d.id and f.id = '"+request.body.id+"' ",(err,res) =>{
                 if(err)
                 {
                    console.log(err)
@@ -665,16 +700,26 @@ modifier_facture(request,response)
                                                 {
                                                     console.log(err);
                                                 }else{
+
+                                                    const page = parseInt(request.query.page) || 1;
+                                const limit = 10; // Rows per page
+                                const startIndex = (page - 1) * limit;
+                                const endIndex = page * limit;
+                            
+                                const paginatedData = result.slice(startIndex, endIndex);
+                                const totalPages = Math.ceil(result.length / limit);
                                                     
                                                     return response.render('factures/factures', {
-                                                        factures: result,
+                                                        factures: paginatedData,
                                                         nom : request.session.nom,
                                                         clients : resultc,
                                                         devis : resultd,
                                                         ttc : resultttc,
                                                         paiement : resultpai,
                                                         produits : resultp,
-                                                        message : "la facture a été modifiée avec succès"
+                                                        message : "la facture a été modifiée avec succès",
+                                                        currentPage : page,
+                                                        totalPages
                                                     })
                                                 
                                                     
@@ -774,7 +819,7 @@ modifier_facture_form(request,response)
             else{ 
             var id = request.query.id;
         
-                sql.query("SELECT c.nom, c.prenom, c.id_client, d.id  as id_devis, f.id as id, f.acompte from devis d, client c, facture f where d.id_client = c.id_client and f.id_devis = d.id  and f.id = '"+id+"' ", function (err, resultf, fields) {
+                sql.query("SELECT c.nom, c.prenom, c.id_client, d.id  as id_devis, d.tva, d.remise, f.id as id, f.acompte from devis d, client c, facture f where d.id_client = c.id_client and f.id_devis = d.id  and f.id = '"+id+"' ", function (err, resultf, fields) {
                     if (err){
                         console.log(err)
                     }
@@ -832,7 +877,7 @@ one_facture(request,response)
     if(request.session.connected==true)
         {
             var id = request.query.id;
-sql.query("select f.date, f.id as id, c.nom , c.prenom , d.id as id_devis, d.tva, d.remise from client c, devis d, facture f where c.id_client = d.id_client and d.id = f.id_devis and f.id = '"+id+"'",(err,resd) =>{
+sql.query("select f.date, f.id as id, c.nom , c.prenom , d.id as id_devis, d.tva , d.remise from client c, devis d, facture f where c.id_client = d.id_client and d.id = f.id_devis and f.id = '"+id+"'",(err,resd) =>{
     if(err)
     {
        console.log(err);

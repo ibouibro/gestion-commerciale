@@ -2,7 +2,13 @@
 
 
 <div class="main-content">
-
+<div class="table-container">
+  <div class="card-header">
+    <div class="card-title">
+      <h5>Modification de devis</h5>
+    </div>
+    
+        </div>
   <form action="/modifier_devis" method="post">
 
    <input type="hidden" name="id" value="<%= devis.id %> ">
@@ -124,6 +130,7 @@ Client
       </div>
       <button type="submit" style="margin:23px;" class="btn btn-primary">Enregistrer</button>
     </form>
+  </div>
     </div>
 
     <script>
@@ -172,7 +179,7 @@ Client
           </div>
           <div>
            <div></div>
-            <input type="number" required class="form-control" name="quant[]" onchange="f1(event)" style="width:170px;" min="1">
+            <input type="number" value="1" required class="form-control" name="quant[]" onchange="f1(event)" style="width:170px;" min="1">
           </div>
           <div>
           <div></div>

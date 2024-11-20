@@ -82,13 +82,23 @@ sql.query("select nom from produit", function (err, result, fields) {
                                            
                                         }else{
                                 
+                                            const page = parseInt(request.query.page) || 1;
+                                            const limit = 10; // Rows per page
+                                            const startIndex = (page - 1) * limit;
+                                            const endIndex = page * limit;
+                                        
+                                            const paginatedData = resultc.slice(startIndex, endIndex);
+                                            const totalPages = Math.ceil(resultc.length / limit);
+    
                                             return response.render('all_commandes', {
-                                                commande :resultc,
+                                                commande :paginatedData,
                                                 nom : request.session.nom,
                                                 produits : resultp1,
                                                 message : "la commande a été créée avec succès!",
                                                 pc : resultpc,
-                                                fournisseurs: resultf
+                                                fournisseurs: resultf,
+                                                currentPage : page,
+                                                totalPages
                                             }) 
                                 
                                 

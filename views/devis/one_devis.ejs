@@ -169,7 +169,7 @@ tfoot td {
     <!-- Tableau des articles facturés -->
      
    
-    <div class="items">
+    <div class="items table-container">
         <table>
             <thead>
             <tr>
@@ -206,9 +206,9 @@ tfoot td {
     </div>
 
     <!-- Totaux -->
-    <div class="total-section">
-        <div></div>
-        <div>
+    <div class="total-section" style="width:300px;">
+        
+        <div style="width:300px;">
 
             <table class="order-table"><thead><th><strong>Total HT :</strong></th>
                 <th><span class="highlight"><%= new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', minimumFractionDigits: 2 }).format(montantHTtotal.toFixed(2)) %></span></th></thead>
