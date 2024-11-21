@@ -230,10 +230,34 @@
     <select name="id_facture" required id="fac" class="form-control" onchange="f(event)">
       <option value="">choisir une facture</option>
       <% for (var i=0; i< factures.length; i++){
+var val = 0;
+    var tt = 0;
+    
+    for(var j=0;j < p.length;j++)
+    {
+        if(p[j].id_facture == factures[i].id)
+        {
+        val = val + p[j].montant; }
+    }
+
+    for(var j=0;j < acomptes.length;j++)
+    {
+        if(factures[i].id == acomptes[j].id)
+        {
+        val = val + acomptes[j].acompte; }
+    }
+    for(var j=0;j < ttc.length; j++)
+    {
+        if(factures[i].id == ttc[j].id)
+        {
+        tt= tt + ttc[j].ttc ; }
+    }
+
+    if(val < tt ){
           %>
 <option value="<%= factures[i].id %>"><%=factures[i].id+". " %><%= factures[i].prenom %> <%= factures[i].nom %></option>
           <%
-                      }                %>
+                    }  }                %>
     </select>
 </div>
 
