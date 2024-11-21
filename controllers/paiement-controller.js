@@ -54,6 +54,7 @@ ajouter_paiement(request,response)
                                                 factures : resultf,
                                                 acomptes : resulta,
                                                 paiements : paginatedData,
+                                                p: resultp,
                                                 ttc : resultttc,
                                                 message : "le paiement a été créé",
                                                 currentPage : page,
@@ -177,6 +178,7 @@ modifier_paiement(request,response)
                                         return response.render('paiements/paiements', {
                                             factures : resultf,
                                             acomptes : resulta,
+                                            p : resultp,
                                             paiements : paginatedData,
                                             ttc : resultttc,
                                             currentPage : page,
