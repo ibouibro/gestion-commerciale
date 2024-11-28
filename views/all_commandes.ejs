@@ -378,7 +378,7 @@ event.target.parentNode.parentNode.parentNode.parentNode.parentNode.innerHTML+=s
   <div  id="sg">
     <div class="card-body card-block">
     
-      <div class="row form-group">
+      <div class="row form-group" style="padding:0px;">
           <div class="col col-lg-3">
             Produit
             <select class="form-control"   required  name="produit[]">
@@ -429,7 +429,7 @@ event.target.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(
 function ajout1(event)
 {
 var a = document.getElementById("group").innerHTML;
-document.getElementById("group").innerHTML= a+' <div  id="sg"><div class="card-body card-block"><div class="row form-group"><div class="col col-md-8"> Produit <select class="form-control" style="width:200px;"  class="col-md-6" required  name="produit[]"><%   for(var j=0; j< produits.length; j++) { %> <option value="<%= produits[j].id_produit %> "><%= produits[j].nom %> </option> <%  } %>  </select>   </div>  <div class="col col-md-4"> Quantité <input type="number" style="border:1px solid gray;" class="col-md-8" placeholder="quantité" name="quantite[]" required min="0"  class="form-control">   <button  onclick="del1(event)" type="button"  class="item" data-toggle="tooltip" data-placement="top" title="supprimer">  <i class="zmdi zmdi-delete"></i>  </button>  </div>  </div>  </div>';
+document.getElementById("group").innerHTML= a+' <div  id="sg"><div class="card-body card-block"><div class="row form-group" style="padding:0px;"><div class="col col-lg-3"> Produit <select class="form-control" required  name="produit[]"><%   for(var j=0; j< produits.length; j++) { %> <option value="<%= produits[j].id_produit %> "><%= produits[j].nom %> </option> <%  } %>  </select>   </div>  <div class="col col-lg-3"> Quantité <input type="number"  class="form-control" placeholder="quantité" name="quantite[]" required min="0"  class="form-control">   <button  onclick="del1(event)" type="button"  class="item" data-toggle="tooltip" data-placement="top" title="supprimer">  <i class="zmdi zmdi-delete"></i>  </button>  </div>  </div>  </div>';
 }
   </script>
 
